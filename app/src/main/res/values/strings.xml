@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">The Movie DB</string>
+    <string name="login_in">LOG IN</string>
+    <string name="register">REGISTER</string>
+    <string name="email">Email</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="invalid_email">Email invalid*</string>
+    <string name="passwords_do_not_match">Passwords do not match*</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+</resources>
