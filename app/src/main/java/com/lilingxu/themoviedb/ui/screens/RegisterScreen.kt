@@ -21,14 +21,14 @@ import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.ui.components.HeaderImage
 import com.lilingxu.themoviedb.ui.components.EmailField
 import com.lilingxu.themoviedb.ui.components.PasswordField
-import com.lilingxu.themoviedb.viewmodel.RegisterViewModel
+import com.lilingxu.themoviedb.ui.viewmodel.RegisterViewModel
 
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     registerOnClick: () -> Unit,
-    viewModel: RegisterViewModel,
+    viewModel: RegisterViewModel ,
 ) {
     val email: String by viewModel.email.observeAsState("")
     val password: String by viewModel.password.observeAsState("")

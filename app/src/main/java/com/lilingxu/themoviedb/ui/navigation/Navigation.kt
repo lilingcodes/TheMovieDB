@@ -1,6 +1,5 @@
-package com.lilingxu.themoviedb.navigation
+package com.lilingxu.themoviedb.ui.navigation
 
-import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,23 +10,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.lilingxu.themoviedb.repository.LoginRepository
 import com.lilingxu.themoviedb.ui.screens.*
-import com.lilingxu.themoviedb.ui.screens.login.LoginScreen
-import com.lilingxu.themoviedb.viewmodel.LoginViewModel
-import com.lilingxu.themoviedb.viewmodel.RegisterViewModel
-
+import com.lilingxu.themoviedb.ui.viewmodel.LoginViewModel
+import com.lilingxu.themoviedb.ui.viewmodel.RegisterViewModel
 
 @Composable
-fun Navigation(context: Context, navController: NavHostController) {
-
+fun Navigation(navController: NavHostController) {
     val loginRepository = LoginRepository()
     val loginViewModel = LoginViewModel(loginRepository)
     val registerViewModel = RegisterViewModel()
+    //val getPopularMoviesUseCase: GetPopularMoviesUseCase =
+    //val egisterViewModel = HomeViewModel(getPopularMoviesUseCase)
 
 
-    //val loginViewModel = ViewModelProvider(context, ViewModelFactory(loginRepository)).get(LoginViewModel::class.java)
+    //val context = LocalContext.current
+
+    //val loginViewModel = ViewModelProvider( ViewModelFactory(loginRepository)).get(LoginViewModel::class.java)
 
 
-    NavHost(navController = navController, startDestination = WelcomeScreen.route) {
+    NavHost(navController = navController, startDestination = HomeScreen.route) {
         composable(WelcomeScreen.route) {
             WelcomeScreen(
                 modifier = Modifier.padding(16.dp),
@@ -81,7 +81,7 @@ fun NavHostController.navigateSingleTopTo(
     route: String,
 ) =
     this.navigate(route) {
-        //esto significa que, cuando se presiona la flecha hacia atrás desde cualquier destino, se lleva toda la pila de actividades a Overview.
+        //esto significa que, cuando se presiona la flecha hacia atrás desde cualquier destino, se lleva toda la pila de actividades a HOME.
         popUpTo(
             this@navigateSingleTopTo.graph.findStartDestination().id
         ) {

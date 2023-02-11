@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -23,7 +24,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.lilingxu.themoviedb.navigation.ScreenDestination
+import com.lilingxu.themoviedb.ui.navigation.ScreenDestination
 import java.util.*
 
 @Composable
@@ -36,7 +37,8 @@ fun TheMovieTapRow(
     Row(
         Modifier
             .selectableGroup()
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .background(Color.Black),
         horizontalArrangement = Arrangement.SpaceAround
 
     ) {
@@ -73,7 +75,7 @@ private fun TheMovieTab(
     )
     Row(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(10.dp)
             .animateContentSize()
             .height(TabHeight)
             .selectable(
@@ -97,7 +99,7 @@ private fun TheMovieTab(
     }
 }
 
-private val TabHeight = 25.dp
+private val TabHeight = 20.dp
 private const val InactiveTabOpacity = 0.60f
 
 private const val TabFadeInAnimationDuration = 150

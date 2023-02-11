@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.viewmodel
+package com.lilingxu.themoviedb.ui.viewmodel
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData

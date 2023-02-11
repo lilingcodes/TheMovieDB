@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.navigation
+package com.lilingxu.themoviedb.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*

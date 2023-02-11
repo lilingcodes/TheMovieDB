@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.ui.screens.login
+package com.lilingxu.themoviedb.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,7 +23,7 @@ import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.ui.components.EmailField
 import com.lilingxu.themoviedb.ui.components.HeaderImage
 import com.lilingxu.themoviedb.ui.components.PasswordField
-import com.lilingxu.themoviedb.viewmodel.LoginViewModel
+import com.lilingxu.themoviedb.ui.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
