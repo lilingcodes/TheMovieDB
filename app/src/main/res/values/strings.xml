@@ -8,4 +8,8 @@
     <string name="passwords_do_not_match">Passwords do not match*</string>
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>
+    <string name="popular">Popular</string>
+    <string name="now_playing">Now playing</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="top_rated">Top rated</string>
 </resources>
