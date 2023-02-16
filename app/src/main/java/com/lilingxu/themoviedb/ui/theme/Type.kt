@@ -10,18 +10,14 @@ import androidx.compose.ui.unit.sp
 import com.lilingxu.themoviedb.R
 
 // Set of Material typography styles to start with
-private val EczarFontFamily = FontFamily(
-    Font(R.font.eczar_regular),
-    Font(R.font.eczar_semibold, FontWeight.SemiBold)
-)
-private val RobotoCondensed = FontFamily(
-    Font(R.font.robotocondensed_regular),
-    Font(R.font.robotocondensed_light, FontWeight.Light),
-    Font(R.font.robotocondensed_bold, FontWeight.Bold)
+private val OpenSans = FontFamily(
+    Font(R.font.opensans_regular),
+    Font(R.font.opensans_light, FontWeight.Light),
+    Font(R.font.opensans_bold, FontWeight.Bold)
 )
 
 val Typography = Typography(
-    defaultFontFamily = RobotoCondensed,
+    defaultFontFamily = OpenSans,
     h1 = TextStyle(
         fontWeight = FontWeight.W100,
         fontSize = 96.sp,
@@ -29,7 +25,6 @@ val Typography = Typography(
     h2 = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 44.sp,
-        fontFamily = EczarFontFamily,
         letterSpacing = 1.5.sp
     ),
     h3 = TextStyle(
@@ -45,11 +40,10 @@ val Typography = Typography(
         fontSize = 24.sp
     ),
     h6 = TextStyle(
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         lineHeight = 20.sp,
-        fontFamily = EczarFontFamily,
-        letterSpacing = 3.sp
+        letterSpacing = 1.sp
     ),
     subtitle1 = TextStyle(
         fontWeight = FontWeight.Light,
