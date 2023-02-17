@@ -13,14 +13,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.domain.model.Movie
+import com.lilingxu.themoviedb.ui.components.MySpacer
 import com.lilingxu.themoviedb.ui.theme.Grey
-import com.lilingxu.themoviedb.ui.theme.TheMovieDBTheme
 import com.lilingxu.themoviedb.ui.viewmodel.HomeViewModel
 import com.lilingxu.themoviedb.utils.IMAGE_BASE_URL
 
@@ -40,21 +39,24 @@ fun HomeScreen(
         modifier = modifier,//.heightIn(max = 2000.dp)
     ) {
         item {
-            Spacer(Modifier.height(50.dp))
+            MySpacer()
         }
 
         item {
             HomeSection(title = stringResource(id = R.string.popular), moviesList = popularList)
-            Spacer(Modifier.height(16.dp))
-            HomeSection(title = stringResource(id = R.string.now_playing),moviesList = nowPlayingList)
-            Spacer(Modifier.height(16.dp))
+            MySpacer()
+            HomeSection(
+                title = stringResource(id = R.string.now_playing),
+                moviesList = nowPlayingList
+            )
+            MySpacer()
             HomeSection(title = stringResource(id = R.string.upcoming), moviesList = upcomingList)
-            Spacer(Modifier.height(16.dp))
-            HomeSection(title = stringResource(id = R.string.top_rated), moviesList = topRatedList)
+            MySpacer()
+            HomeSection(title = stringResource(id =R.string.top_rated), moviesList = topRatedList)
         }
 
         item {
-            Spacer(Modifier.height(50.dp))
+            MySpacer()
         }
     }
 
@@ -72,7 +74,7 @@ fun HomeSection(
             text = title,
             style = MaterialTheme.typography.h5
         )
-        Spacer(Modifier.height(8.dp))
+                                                                                                                                                                                                Spacer(Modifier.height(8.dp))
         LazyRow(
             modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -89,9 +91,9 @@ fun HomeSection(
 @Composable
 fun MovieItem(movie: Movie) {
     Card(
-        modifier = Modifier
-            .height(200.dp)
-            .width(140.dp),
+        modifier = Modifier.heightIn(200.dp).widthIn(140.dp),
+           /* .height(200.dp)
+            .width(140.dp),*/
         backgroundColor = Grey,
         shape = MaterialTheme.shapes.medium,
         elevation = 10.dp
@@ -105,18 +107,3 @@ fun MovieItem(movie: Movie) {
     }
 }
 
-
-@Preview
-@Composable
-fun MovieItemPreview() {
-    TheMovieDBTheme {
-        val movie = Movie(
-            123,
-            "Run",
-            5.8,
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/ibjKNVEk348eIXnvwEz2wC45MGs.jpg"
-        )
-        MovieItem(movie = movie)
-    }
-
-}

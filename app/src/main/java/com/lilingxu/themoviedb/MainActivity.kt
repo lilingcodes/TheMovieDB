@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                         ) 
                     }
                 ) {
-                    Navigation(navController)
+                    Navigation(navController, it)
 
                 }
             }

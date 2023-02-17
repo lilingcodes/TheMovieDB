@@ -26,9 +26,9 @@ import com.lilingxu.themoviedb.ui.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier,
     registerOnClick: () -> Unit,
     viewModel: RegisterViewModel ,
+    modifier: Modifier = Modifier,
 ) {
     val email: String by viewModel.email.observeAsState("")
     val password: String by viewModel.password.observeAsState("")

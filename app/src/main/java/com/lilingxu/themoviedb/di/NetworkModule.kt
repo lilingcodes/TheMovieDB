@@ -38,4 +38,5 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideRepository(api: TheMovieService): MovieRepository = MovieRepositoryImpl(api)
+
 }

@@ -16,6 +16,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,6 +26,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.lilingxu.themoviedb.ui.navigation.ScreenDestination
+import com.lilingxu.themoviedb.ui.theme.DarkBlue900
 import java.util.*
 
 @Composable
@@ -38,7 +40,7 @@ fun TheMovieTapRow(
         Modifier
             .selectableGroup()
             .fillMaxWidth()
-            .background(Color.Black),
+            .background(DarkBlue900),
         horizontalArrangement = Arrangement.SpaceAround
 
     ) {
@@ -89,7 +91,8 @@ private fun TheMovieTab(
                     color = Color.Unspecified
                 )
             )
-            .clearAndSetSemantics { contentDescription = text }
+            .clearAndSetSemantics { contentDescription = text },
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(imageVector = icon, contentDescription = text, tint = tabTintColor)
         if (selected) {
@@ -99,7 +102,7 @@ private fun TheMovieTab(
     }
 }
 
-private val TabHeight = 20.dp
+private val TabHeight = 40.dp
 private const val InactiveTabOpacity = 0.60f
 
 private const val TabFadeInAnimationDuration = 150

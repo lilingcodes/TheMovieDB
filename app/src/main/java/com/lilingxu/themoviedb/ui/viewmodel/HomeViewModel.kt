@@ -33,70 +33,46 @@ class HomeViewModel @Inject constructor(
 
 
     init {
+        _isLoading.value = true
         getPopularMovies()
         getNowPlayingMovies()
         getUpcomingMovies()
         getTopRatedMovies()
+        _isLoading.value = false
     }
 
 
     private fun getPopularMovies() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            when (val result = repository.getPopularMovies()) {
-                is ResultAPI.Success -> {
-                    _isLoading.value = false
-                    _popularMovies.value = result.data ?: emptyList()
-                }
-                is ResultAPI.Error -> {
-                    _isLoading.value = false
-                }
-            }
-        }
+        getMovies(MovieRepository::getPopularMovies, _popularMovies)
     }
 
     private fun getNowPlayingMovies() {
-        viewModelScope.launch {
-            when (val result = repository.getNowPlayingMovies()) {
-                is ResultAPI.Success -> {
-                    _isLoading.value = false
-                    _nowPlayingMovies.value = result.data ?: emptyList()
-                }
-                is ResultAPI.Error -> {
-                    _isLoading.value = false
-                }
-            }
-        }
+        getMovies(MovieRepository::getNowPlayingMovies, _nowPlayingMovies)
     }
 
     private fun getUpcomingMovies() {
-        viewModelScope.launch {
-            when (val result = repository.getUpcomingMovies()) {
-                is ResultAPI.Success -> {
-                    _isLoading.value = false
-                    _upcomingMovies.value = result.data ?: emptyList()
-                }
-                is ResultAPI.Error -> {
-                    _isLoading.value = false
-                }
-            }
-        }
+        getMovies(MovieRepository::getUpcomingMovies, _upcomingMovies)
     }
-
 
     private fun getTopRatedMovies() {
+        getMovies(MovieRepository::getTopRatedMovies, _topRatedMovies)
+    }
+
+    private fun getMovies(
+        apiCall: suspend MovieRepository.() -> ResultAPI<List<Movie>>,
+        movieList: MutableLiveData<List<Movie>>,
+    ) {
         viewModelScope.launch {
-            when (val result = repository.getTopRatedMovie()) {
+            when (val result = apiCall(repository)) {
                 is ResultAPI.Success -> {
-                    _isLoading.value = false
-                    _topRatedMovies.value = result.data ?: emptyList()
+                    movieList.value = result.data ?: emptyList()
                 }
                 is ResultAPI.Error -> {
-                    _isLoading.value = false
+                    //TODO mostar un dialog de error
                 }
+                else -> {}
             }
         }
     }
-
 }
 
