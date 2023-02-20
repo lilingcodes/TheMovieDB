@@ -39,8 +39,8 @@ fun PasswordField(
         trailingIcon = {
             IconButton(onClick = { hidden = !hidden }) {
                 val vector = painterResource(
-                    if (hidden) R.drawable.ic_visibility
-                    else R.drawable.ic_visibility_off
+                    if (hidden) R.drawable.ic_visibility_off
+                    else R.drawable.ic_visibility
                 )
                 val description = if (hidden) "Ocultar contraseña" else "Revelar contraseña"
                 Icon(painter = vector, contentDescription = description, Modifier.size(20.dp))

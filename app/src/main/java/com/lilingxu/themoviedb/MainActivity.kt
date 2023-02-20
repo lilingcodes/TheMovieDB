@@ -6,13 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lilingxu.themoviedb.ui.components.TheMovieTapRow
-import com.lilingxu.themoviedb.ui.navigation.HomeScreen
-import com.lilingxu.themoviedb.ui.navigation.Navigation
-import com.lilingxu.themoviedb.ui.navigation.allScreens
-import com.lilingxu.themoviedb.ui.navigation.navigateSingleTopTo
+import com.lilingxu.themoviedb.ui.navigation.*
 import com.lilingxu.themoviedb.ui.theme.TheMovieDBTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,20 +24,24 @@ class MainActivity : ComponentActivity() {
                 //bottomBar controller
                 val currentBackStack by navController.currentBackStackEntryAsState()
                 val currentDestination = currentBackStack?.destination
-                val currentScreen = allScreens.find {
-                    it.route == currentDestination?.route
-                } ?: HomeScreen
+
 
                 Scaffold(
                     modifier = Modifier,
                     bottomBar = {
-                        TheMovieTapRow(
-                            allScreens = allScreens,
-                            onTabSelected = { screen ->
-                                navController.navigateSingleTopTo(screen.route)
-                            },
-                            currentScreen = currentScreen
-                        ) 
+                        if (shouldShowBottomBar(navController)) {
+                            val currentScreen = allScreens.find {
+                                it.route == currentDestination?.route
+                            } ?: HomeScreen
+
+                            TheMovieTapRow(
+                                allScreens = allScreens,
+                                onTabSelected = { screen ->
+                                    navController.navigateSingleTopTo(screen.route)
+                                },
+                                currentScreen = currentScreen
+                            )
+                        }
                     }
                 ) {
                     Navigation(navController, it)
@@ -48,5 +50,15 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+fun shouldShowBottomBar(navController: NavHostController): Boolean {
+    val currentDestination = navController.currentBackStackEntry?.destination
+    return currentDestination?.route in listOf(
+        HomeScreen.route,
+        DiscoverScreen.route,
+        FavoriteScreen.route,
+        ProfileScreen.route
+    )
 }
 

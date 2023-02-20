@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "85744778683",
+    "project_id": "the-movie-db-41409",
+    "storage_bucket": "the-movie-db-41409.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85744778683:android:2939412f15ae90769c989e",
+        "android_client_info": {
+          "package_name": "com.lilingxu.themoviedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85744778683-t0bgtc203cpp16keumdu1kd750slpcoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsH6KIm5Te9O0TYyuaSujBvyAB0AXD8T0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85744778683-bb1aea43bp71nsr4ncfvgqdcstoqtpms.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
