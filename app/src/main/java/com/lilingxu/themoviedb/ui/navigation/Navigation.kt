@@ -9,26 +9,17 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.lilingxu.themoviedb.repository.LoginRepository
 import com.lilingxu.themoviedb.ui.screens.*
-import com.lilingxu.themoviedb.ui.viewmodel.LoginViewModel
-import com.lilingxu.themoviedb.ui.viewmodel.RegisterViewModel
 
 @Composable
 fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
-    val loginRepository = LoginRepository()
-    val loginViewModel = LoginViewModel(loginRepository)
-    val registerViewModel = RegisterViewModel()
-    //val getPopularMoviesUseCase: GetPopularMoviesUseCase =
-    //val egisterViewModel = HomeViewModel(getPopularMoviesUseCase)
+    var startDestination = WelcomeScreen.route
 
+    if (false){
+        startDestination = HomeScreen.route
+    }
 
-    //val context = LocalContext.current
-
-    //val loginViewModel = ViewModelProvider( ViewModelFactory(loginRepository)).get(LoginViewModel::class.java)
-
-
-    NavHost(navController = navController, startDestination = DiscoverScreen.route) {
+    NavHost(navController = navController, startDestination = WelcomeScreen.route) {
         composable(WelcomeScreen.route) {
             WelcomeScreen(
                 loginOnClick = { navController.navigate(LoginScreen.route) },
@@ -37,13 +28,10 @@ fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
             )
         }
         composable(LoginScreen.route) {
-
             LoginScreen(
                 forgotPasswordOnClick = { navController.navigate(RegisterScreen.route) },
                 loginOnClick = { navController.navigate(HomeScreen.route) },
                 modifier = Modifier.padding(16.dp),
-                viewModel = loginViewModel
-
             )
         }
         composable(RegisterScreen.route) {
@@ -52,7 +40,6 @@ fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
                     navController.navigate(HomeScreen.route)
                 },
                 modifier = Modifier.padding(16.dp),
-                viewModel = registerViewModel
             )
         }
         composable(HomeScreen.route) {

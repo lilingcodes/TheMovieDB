@@ -5,10 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lilingxu.themoviedb.domain.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-class RegisterViewModel: ViewModel() {
+import javax.inject.Inject
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val loginRepository: AuthRepository
+): ViewModel() {
     private val _email = MutableLiveData("")
     val email: LiveData<String> get() = _email
 

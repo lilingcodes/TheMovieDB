@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class TheMovieService @Inject constructor(
     private val api: TheMovieApi,
-    private val token: String,
+    @ApiToken private val token: String,
 ) {
 
     suspend fun getPopularMoviesService(): ResultAPI<List<Movie>> =

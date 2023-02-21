@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.ui.components.HeaderImage
 import com.lilingxu.themoviedb.ui.components.EmailField
@@ -27,8 +28,8 @@ import com.lilingxu.themoviedb.ui.viewmodel.RegisterViewModel
 @Composable
 fun RegisterScreen(
     registerOnClick: () -> Unit,
-    viewModel: RegisterViewModel ,
     modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel = hiltViewModel(),
 ) {
     val email: String by viewModel.email.observeAsState("")
     val password: String by viewModel.password.observeAsState("")
@@ -93,7 +94,9 @@ fun RegisterScreen(
 
             if (!isPasswordEqual) {
                 Text(
-                    modifier = Modifier.align(Alignment.Start).padding(start = 15.dp),
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(start = 15.dp),
                     text = stringResource(id = R.string.passwords_do_not_match),
                     color = Color(0xFFAC4343)
                 )
