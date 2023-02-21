@@ -31,6 +31,7 @@ fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
             LoginScreen(
                 forgotPasswordOnClick = { navController.navigate(RegisterScreen.route) },
                 loginOnClick = { navController.navigate(HomeScreen.route) },
+                createNewUser = { navController.navigate(DiscoverScreen.route) },
                 modifier = Modifier.padding(16.dp),
             )
         }

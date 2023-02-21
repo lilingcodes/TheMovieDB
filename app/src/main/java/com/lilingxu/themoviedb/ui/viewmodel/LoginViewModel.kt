@@ -1,11 +1,20 @@
 package com.lilingxu.themoviedb.ui.viewmodel
 
+import android.content.Intent
+import android.util.Log
 import android.util.Patterns
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.lilingxu.themoviedb.data.ResultAPI
 import com.lilingxu.themoviedb.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -16,6 +25,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val repository: AuthRepository,
     private val googleSignInClient: GoogleSignInClient,
+    private val firebaseAuth: FirebaseAuth,
 ) : ViewModel() {
 
     private val _email = MutableLiveData<String>("")
@@ -56,6 +66,47 @@ class LoginViewModel @Inject constructor(
             _isLoading.value = false
             loginOnClick()
         }
+    }
+
+    fun loginWithCredential(activityResult: ActivityResult, onLoginSuccess: ()->Unit, onCreateNewUser: () -> Unit) {
+        viewModelScope.launch {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(activityResult.data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+                repository.loginWithCredential(credential).collect {
+                    when (it) {
+                        is ResultAPI.Success<*> -> {
+                            if (it.data?.additionalUserInfo?.isNewUser == true){
+                                onCreateNewUser()
+                            }else{
+                                onLoginSuccess()
+                            }
+                            _isLoading.value = false
+
+                        }
+
+                        is ResultAPI.Loading<*> -> {
+                            _isLoading.value = true
+                        }
+
+                        is ResultAPI.Error<*> -> {
+                            //TODO mostar un dialog de error
+                            _isLoading.value = false
+                        }
+                    }
+
+                }
+            } catch (e: ApiException) {
+                Log.e("TAG", "Google sign in failed", e)
+            }
+        }
+
+    }
+
+    fun loginWithGoogle(launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
+        googleSignInClient.signOut()
+        launcher.launch(googleSignInClient.signInIntent)
     }
 
 
