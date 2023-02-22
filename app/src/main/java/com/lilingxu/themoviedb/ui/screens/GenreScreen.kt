@@ -3,7 +3,9 @@ package com.lilingxu.themoviedb.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,6 +22,8 @@ import kotlinx.coroutines.flow.filter
 @Composable
 fun GenreScreen(
     genreId: Int,
+    genreName: String,
+    arrowBackOnClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GenreViewModel = hiltViewModel(),
 ) {
@@ -29,25 +33,23 @@ fun GenreScreen(
     val isLoading by viewModel.isLoading.observeAsState(false)
     val listState = rememberLazyGridState()
 
-
-    LazyVerticalGrid(
-        modifier = modifier,
-        columns = GridCells.Adaptive(140.dp),
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            top = 16.dp,
-            end = 12.dp,
-            bottom = 16.dp
-        ),
-        state = listState,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(movieList) {
-            MovieItem(movie = it)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = arrowBackOnClick) {
+                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
+                    }
+                },
+                title = {
+                    Text(genreName)
+                }
+            )
         }
-
+    ) {
+        MovieGrid(movieList, listState)
     }
+
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.isScrolledToEnd() }
@@ -59,6 +61,26 @@ fun GenreScreen(
             }
     }
 
+}
+
+@Composable
+fun MovieGrid(movieList: List<Movie>, listState: LazyGridState, modifier: Modifier = Modifier) {
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Adaptive(140.dp),
+        contentPadding = PaddingValues(
+            vertical = 16.dp,
+            horizontal = 12.dp,
+        ),
+        state = listState,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(movieList) {
+            MovieItem(movie = it)
+        }
+
+    }
 }
 
 fun LazyGridState.isScrolledToEnd(): Boolean {

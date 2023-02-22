@@ -24,7 +24,7 @@ import com.lilingxu.themoviedb.ui.viewmodel.DiscoverViewModel
 @Composable
 fun DiscoverScreen(
     searchFieldOnClick: () -> Unit,
-    genreTypeOnClick:(Int) -> Unit,
+    genreTypeOnClick:(Int, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DiscoverViewModel = hiltViewModel(),
 ) {
@@ -34,7 +34,7 @@ fun DiscoverScreen(
     LazyColumn(modifier = modifier, verticalArrangement = Arrangement.Center) {
         items(genres) {
             GenreItem(name = it.name) {
-                genreTypeOnClick(it.id)
+                genreTypeOnClick(it.id, it.name)
                 searchFieldOnClick()
             }
         }

@@ -91,9 +91,9 @@ fun HomeSection(
 @Composable
 fun MovieItem(movie: Movie) {
     Card(
-        modifier = Modifier.heightIn(200.dp).widthIn(140.dp),
-           /* .height(200.dp)
-            .width(140.dp),*/
+        modifier = Modifier/*.heightIn(200.dp).widthIn(140.dp),*/
+            .height(210.dp)
+            .width(140.dp),
         backgroundColor = Grey,
         shape = MaterialTheme.shapes.medium,
         elevation = 10.dp

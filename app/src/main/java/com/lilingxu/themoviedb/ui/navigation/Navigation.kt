@@ -25,6 +25,7 @@ fun Navigation(
     mainViewModel.updateStartDestination()
 
     NavHost(navController = navController, startDestination = startDestination) {
+
         composable(WelcomeScreen.route) {
             WelcomeScreen(
                 loginOnClick = { navController.navigate(LoginScreen.route) },
@@ -32,25 +33,28 @@ fun Navigation(
                 modifier = Modifier.padding(16.dp)
             )
         }
+
         composable(LoginScreen.route) {
             LoginScreen(
                 forgotPasswordOnClick = { navController.navigate(RegisterScreen.route) },
                 loginOnClick = {
-                    navController.navigateToHome(HomeScreen.route)
+                    navController.navigateSingleTopTo(HomeScreen.route)
                     mainViewModel.updateStartDestination()
                 },
                 createNewUser = { navController.navigate(DiscoverScreen.route) },
                 modifier = Modifier.padding(16.dp),
             )
         }
+
         composable(RegisterScreen.route) {
             RegisterScreen(
                 registerOnClick = {
-                    navController.navigateToHome(HomeScreen.route)
+                    navController.navigateSingleTopTo(HomeScreen.route)
                 },
                 modifier = Modifier.padding(16.dp),
             )
         }
+
         composable(HomeScreen.route) {
             HomeScreen(Modifier.padding(paddingValues))
         }
@@ -58,8 +62,8 @@ fun Navigation(
         composable(DiscoverScreen.route) {
             DiscoverScreen(
                 searchFieldOnClick = {},
-                genreTypeOnClick = {
-                    navController.navigateToGenre(it)
+                genreTypeOnClick = { id, name ->
+                    navController.navigateToGenre(id, name)
                 }
             )
 
@@ -69,14 +73,20 @@ fun Navigation(
             route = GenreScreen.routeWithArgs,
             arguments = GenreScreen.arguments
         ) {
-            val genreType = it.arguments?.getInt(GenreScreen.genreType)
-            requireNotNull(genreType)
-            GenreScreen(genreType, Modifier.padding(paddingValues))
+            val genreType = it.arguments?.getInt(GenreScreen.genreId)!!
+            val genreName = it.arguments?.getString(GenreScreen.genreType)!!
+            GenreScreen(
+                genreType,
+                genreName,
+                arrowBackOnClick = { navController.popBackStack() },
+                Modifier.padding(paddingValues)
+            )
         }
 
         composable(FavoriteScreen.route) {
             FavoriteScreen()
         }
+
         composable(ProfileScreen.route) {
             ProfileScreen() {
                 navController.navigateSingleTopTo(WelcomeScreen.route)
@@ -109,20 +119,14 @@ fun NavHostController.navigateSingleTopTo(
         restoreState = true
     }
 
-fun NavHostController.navigateToGenre(typeId: Int) =
-    this.navigate("${GenreScreen.route}/${typeId}") {
+fun NavHostController.navigateToGenre(genreId: Int, genreName: String) =
+    this.navigate("${GenreScreen.route}/${genreId}/${genreName}") {
         popUpTo(
-            this@navigateToGenre.graph.findStartDestination().id
+            DiscoverScreen.route
         ) {
             saveState = true
         }
 
     }
 
-fun NavHostController.navigateToHome(route: String) =
-    this.navigate(route) {
-        popUpTo(
-            HomeScreen.route
-        )
 
-    }

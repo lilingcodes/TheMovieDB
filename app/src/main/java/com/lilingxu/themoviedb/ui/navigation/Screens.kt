@@ -50,23 +50,25 @@ object ProfileScreen : ScreenDestination {
     override val route = "profile"
     override val icon = Icons.Filled.Person
 }
+
 object SearchScreen : ScreenDestination {
     override val route = "search"
     override val icon = Icons.Filled.Search
 }
 
-object GenreScreen : ScreenDestination{
+object GenreScreen : ScreenDestination {
     override val route = "genre"
     override val icon = Icons.Filled.Search
+    const val genreId = "genre_id"
     const val genreType = "genre_type"
-    val routeWithArgs = "$route/{$genreType}"
+    val routeWithArgs = "$route/{$genreId}/{${genreType}}"
     val arguments = listOf(
-        navArgument(GenreScreen.genreType) {
+        navArgument(GenreScreen.genreId) {
             type = NavType.IntType
+        },
+        navArgument(GenreScreen.genreType) {
+            type = NavType.StringType
         }
-    )
-    val deepLinks = listOf(
-        navDeepLink { uriPattern = "TheMovieDB://${GenreScreen.route}/{${GenreScreen.genreType}}" }
     )
 }
 
