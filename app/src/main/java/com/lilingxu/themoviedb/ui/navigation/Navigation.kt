@@ -3,23 +3,28 @@ package com.lilingxu.themoviedb.ui.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.lilingxu.themoviedb.ui.screens.*
+import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 
 @Composable
-fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
-    var startDestination = WelcomeScreen.route
+fun Navigation(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+    mainViewModel: MainViewModel = hiltViewModel(),
+) {
 
-    if (false){
-        startDestination = HomeScreen.route
-    }
+    val startDestination = mainViewModel.startDestination.collectAsState().value
+    mainViewModel.updateStartDestination()
 
-    NavHost(navController = navController, startDestination = WelcomeScreen.route) {
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(WelcomeScreen.route) {
             WelcomeScreen(
                 loginOnClick = { navController.navigate(LoginScreen.route) },
@@ -30,7 +35,10 @@ fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
         composable(LoginScreen.route) {
             LoginScreen(
                 forgotPasswordOnClick = { navController.navigate(RegisterScreen.route) },
-                loginOnClick = { navController.navigate(HomeScreen.route) },
+                loginOnClick = {
+                    navController.navigateToHome(HomeScreen.route)
+                    mainViewModel.updateStartDestination()
+                },
                 createNewUser = { navController.navigate(DiscoverScreen.route) },
                 modifier = Modifier.padding(16.dp),
             )
@@ -38,7 +46,7 @@ fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
         composable(RegisterScreen.route) {
             RegisterScreen(
                 registerOnClick = {
-                    navController.navigate(HomeScreen.route)
+                    navController.navigateToHome(HomeScreen.route)
                 },
                 modifier = Modifier.padding(16.dp),
             )
@@ -70,7 +78,11 @@ fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
             FavoriteScreen()
         }
         composable(ProfileScreen.route) {
-            ProfileScreen()
+            ProfileScreen() {
+                navController.navigateSingleTopTo(WelcomeScreen.route)
+                mainViewModel.updateStartDestination()
+
+            }
         }
     }
 
@@ -98,11 +110,19 @@ fun NavHostController.navigateSingleTopTo(
     }
 
 fun NavHostController.navigateToGenre(typeId: Int) =
-    this.navigate("${GenreScreen.route}/${typeId}"){
+    this.navigate("${GenreScreen.route}/${typeId}") {
         popUpTo(
             this@navigateToGenre.graph.findStartDestination().id
         ) {
             saveState = true
         }
+
+    }
+
+fun NavHostController.navigateToHome(route: String) =
+    this.navigate(route) {
+        popUpTo(
+            HomeScreen.route
+        )
 
     }

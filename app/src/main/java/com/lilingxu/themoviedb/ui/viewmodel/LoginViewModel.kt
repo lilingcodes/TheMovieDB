@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.lilingxu.themoviedb.TheMovieDBApplication.Companion.sharedPref
 import com.lilingxu.themoviedb.data.ResultAPI
 import com.lilingxu.themoviedb.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -68,7 +69,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun loginWithCredential(activityResult: ActivityResult, onLoginSuccess: ()->Unit, onCreateNewUser: () -> Unit) {
+    fun loginWithCredential(
+        activityResult: ActivityResult,
+        onLoginSuccess: () -> Unit,
+        onCreateNewUser: () -> Unit,
+    ) {
         viewModelScope.launch {
             val task = GoogleSignIn.getSignedInAccountFromIntent(activityResult.data)
             try {
@@ -77,9 +82,11 @@ class LoginViewModel @Inject constructor(
                 repository.loginWithCredential(credential).collect {
                     when (it) {
                         is ResultAPI.Success<*> -> {
-                            if (it.data?.additionalUserInfo?.isNewUser == true){
+                            val userInfo = it.data?.additionalUserInfo
+                            if (userInfo?.isNewUser == true) {
                                 onCreateNewUser()
-                            }else{
+                            } else {
+                                sharedPref.setIsLogged(true)
                                 onLoginSuccess()
                             }
                             _isLoading.value = false
