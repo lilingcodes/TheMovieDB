@@ -23,26 +23,22 @@ class GenreViewModel @Inject constructor(
     private val _movieList = MutableLiveData<List<Movie>>(mutableListOf())
     val movieList: MutableLiveData<List<Movie>> get() = _movieList
 
-    private val _currentPage = MutableLiveData(1)
+    private val _currentPage = MutableLiveData<Int>(1)
 
-    private val _genreId = MutableLiveData(0)
-    val genreId: LiveData<Int> get() = _genreId
-
-    fun  getMoviesByGenre(genreId: Int) {
-        if (genreId != _genreId.value) {
-            _movieList.value = emptyList()
-            _genreId.value = genreId
-        }
-        getMovies(_movieList) {
-            repository.getMoviesByGenre(genreId)
-        }
-    }
+    private val _genreId = MutableLiveData<Int>(0)
 
     fun loadNextPage(genreId: Int) {
         _isLoading.value = true
 
         val current = _currentPage.value ?: 1
-        _currentPage.value = current + 1
+
+        if (genreId != _genreId.value) {
+            _movieList.value = emptyList()
+            _genreId.value = genreId
+            _currentPage.value = 1
+        }else {
+            _currentPage.value = current + 1
+        }
 
         _currentPage.value?.let {
             getMovies(_movieList) {

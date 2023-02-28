@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,14 +22,16 @@ import com.lilingxu.themoviedb.ui.viewmodel.DiscoverViewModel
 @Composable
 fun DiscoverScreen(
     searchFieldOnClick: () -> Unit,
-    genreTypeOnClick:(Int, String) -> Unit,
+    genreTypeOnClick: (Int, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DiscoverViewModel = hiltViewModel(),
 ) {
-
     val genres: List<Genre> by viewModel.genresList.observeAsState(emptyList())
 
     LazyColumn(modifier = modifier, verticalArrangement = Arrangement.Center) {
+        item {
+
+        }
         items(genres) {
             GenreItem(name = it.name) {
                 genreTypeOnClick(it.id, it.name)
@@ -41,19 +41,19 @@ fun DiscoverScreen(
     }
 }
 
+
 @Composable
 fun GenreItem(name: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .height(60.dp)
             .fillMaxWidth()
-            .padding(vertical = 4.dp, horizontal = 16.dp)
-            .clickable { onClick() },
+            .padding(vertical = 4.dp, horizontal = 16.dp),
         backgroundColor = DarkBlue900,
         shape = RoundedCornerShape(30.dp),
         elevation = 5.dp,
     ) {
-        Box(contentAlignment = Alignment.Center) {
+        Box(Modifier.clickable { onClick() }, contentAlignment = Alignment.Center) {
             Text(
                 text = name,
                 style = MaterialTheme.typography.h6

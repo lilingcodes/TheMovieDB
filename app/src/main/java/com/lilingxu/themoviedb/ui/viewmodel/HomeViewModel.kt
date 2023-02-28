@@ -41,7 +41,6 @@ class HomeViewModel @Inject constructor(
         _isLoading.value = false
     }
 
-
     private fun getPopularMovies() {
         getMovies(MovieRepository::getPopularMovies, _popularMovies)
     }
