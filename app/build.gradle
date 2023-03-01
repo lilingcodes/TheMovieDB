@@ -109,7 +109,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     //LiveData
     implementation "androidx.compose.runtime:runtime-livedata:1.2.1"
-
+    //ratingBar
     implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.4'
+    //Material3
+    implementation("androidx.compose.material3:material3:1.0.1")
 
 }

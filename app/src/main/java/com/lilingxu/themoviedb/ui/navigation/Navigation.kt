@@ -61,6 +61,7 @@ fun Navigation(
 
         composable(DiscoverScreen.route) {
             DiscoverScreen(
+                modifier = Modifier.padding(paddingValues),
                 searchFieldOnClick = {},
                 genreTypeOnClick = { id, name ->
                     navController.navigateToGenre(id, name)
@@ -84,11 +85,11 @@ fun Navigation(
         }
 
         composable(FavoriteScreen.route) {
-            FavoriteScreen()
+            FavoriteScreen(modifier = Modifier.padding(paddingValues))
         }
 
         composable(ProfileScreen.route) {
-            ProfileScreen() {
+            ProfileScreen(modifier = Modifier.padding(paddingValues)) {
                 navController.navigateSingleTopTo(WelcomeScreen.route)
                 mainViewModel.updateStartDestination()
 

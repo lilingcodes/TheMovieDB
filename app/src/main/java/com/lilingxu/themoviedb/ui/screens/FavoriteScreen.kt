@@ -4,10 +4,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.lilingxu.themoviedb.ui.components.MySpacer
 
 @Composable
-fun FavoriteScreen() {
+fun FavoriteScreen(modifier: Modifier = Modifier) {
     LazyColumn {
         item {
 

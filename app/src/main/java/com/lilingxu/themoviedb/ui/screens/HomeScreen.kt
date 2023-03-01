@@ -78,9 +78,6 @@ fun HomeScreen(
                 MySpacer()
             }
 
-            item {
-                MySpacer()
-            }
         }
     }
 

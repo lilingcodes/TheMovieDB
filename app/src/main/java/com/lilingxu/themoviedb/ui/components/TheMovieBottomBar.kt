@@ -30,7 +30,7 @@ import com.lilingxu.themoviedb.ui.theme.DarkBlue900
 import java.util.*
 
 @Composable
-fun TheMovieTapRow(
+fun TheMovieBottomBar(
     allScreens: List<ScreenDestination>,
     onTabSelected: (ScreenDestination) -> Unit,
     currentScreen: ScreenDestination,
