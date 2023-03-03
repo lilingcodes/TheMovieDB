@@ -15,9 +15,14 @@ private val OpenSans = FontFamily(
     Font(R.font.opensans_light, FontWeight.Light),
     Font(R.font.opensans_bold, FontWeight.Bold)
 )
+private val Roboto = FontFamily(
+    Font(R.font.roboto_regular),
+    Font(R.font.roboto_light, FontWeight.Light),
+    Font(R.font.roboto_bold, FontWeight.Bold)
+)
 
 val Typography = Typography(
-    defaultFontFamily = OpenSans,
+    defaultFontFamily = Roboto,
     h1 = TextStyle(
         fontWeight = FontWeight.W100,
         fontSize = 96.sp,
@@ -29,7 +34,7 @@ val Typography = Typography(
     ),
     h3 = TextStyle(
         fontWeight = FontWeight.W400,
-        fontSize = 14.sp
+        fontSize = 44.sp
     ),
     h4 = TextStyle(
         fontWeight = FontWeight.W700,
@@ -43,7 +48,6 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         lineHeight = 20.sp,
-        letterSpacing = 1.sp
     ),
     subtitle1 = TextStyle(
         fontWeight = FontWeight.Light,
@@ -53,19 +57,17 @@ val Typography = Typography(
     ),
     subtitle2 = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         letterSpacing = 0.1.em
     ),
     body1 = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        letterSpacing = 0.1.em
+        fontSize = 15.sp,
     ),
     body2 = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.1.em
     ),
     button = TextStyle(
         fontWeight = FontWeight.Bold,
@@ -79,6 +81,7 @@ val Typography = Typography(
     ),
     overline = TextStyle(
         fontWeight = FontWeight.W500,
-        fontSize = 10.sp
+        fontSize = 10.sp,
+        color = Grey
     )
 )
