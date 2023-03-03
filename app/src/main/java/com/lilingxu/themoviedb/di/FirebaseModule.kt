@@ -5,6 +5,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.data.network.AuthService
 import com.lilingxu.themoviedb.data.network.GoogleToken
@@ -44,8 +48,23 @@ object FirebaseModule {
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseStorage(): StorageReference =
+        FirebaseStorage.getInstance().reference.child("profilePics")
+
+
+    @Provides
+    @Singleton
+    fun provideUserCollection(db: FirebaseFirestore): CollectionReference = db.collection("users")
+
     @Singleton
     @Provides
-    fun provideLoginRepository(authService: AuthService): AuthRepository = AuthRepositoryImpl(authService)
+    fun provideLoginRepository(authService: AuthService): AuthRepository =
+        AuthRepositoryImpl(authService)
 
 }

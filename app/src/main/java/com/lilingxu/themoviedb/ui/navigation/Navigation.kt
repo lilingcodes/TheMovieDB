@@ -17,20 +17,20 @@ import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 @Composable
 fun Navigation(
     navController: NavHostController,
-    paddingValues: PaddingValues,
+    modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
 
     val startDestination = mainViewModel.startDestination.collectAsState().value
     mainViewModel.updateStartDestination()
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(navController = navController, startDestination = CreateUsernameScreen.route) {
 
         composable(WelcomeScreen.route) {
             WelcomeScreen(
                 loginOnClick = { navController.navigate(LoginScreen.route) },
                 registerOnClick = { navController.navigate(RegisterScreen.route) },
-                modifier = Modifier.padding(16.dp)
+                modifier = modifier
             )
         }
 
@@ -41,27 +41,34 @@ fun Navigation(
                     navController.navigateSingleTopTo(HomeScreen.route)
                     mainViewModel.updateStartDestination()
                 },
-                createNewUser = { navController.navigate(DiscoverScreen.route) },
-                modifier = Modifier.padding(16.dp),
+                createNewUser = { navController.navigate(CreateUsernameScreen.route) },
+                modifier = modifier,
             )
         }
 
         composable(RegisterScreen.route) {
             RegisterScreen(
                 registerOnClick = {
-                    navController.navigateSingleTopTo(HomeScreen.route)
+                    navController.navigate(CreateUsernameScreen.route)
                 },
-                modifier = Modifier.padding(16.dp),
+                modifier = modifier,
+            )
+        }
+
+        composable(CreateUsernameScreen.route) {
+            CreateUsernameScreen(
+                nextOnClick = { navController.navigateSingleTopTo(HomeScreen.route) },
+                modifier = modifier
             )
         }
 
         composable(HomeScreen.route) {
-            HomeScreen(Modifier.padding(paddingValues))
+            HomeScreen(modifier)
         }
 
         composable(DiscoverScreen.route) {
             DiscoverScreen(
-                modifier = Modifier.padding(paddingValues),
+                modifier = modifier,
                 searchFieldOnClick = {},
                 genreTypeOnClick = { id, name ->
                     navController.navigateToGenre(id, name)
@@ -80,16 +87,16 @@ fun Navigation(
                 genreType,
                 genreName,
                 arrowBackOnClick = { navController.popBackStack() },
-                Modifier.padding(paddingValues)
+                modifier
             )
         }
 
         composable(FavoriteScreen.route) {
-            FavoriteScreen(modifier = Modifier.padding(paddingValues))
+            FavoriteScreen(modifier)
         }
 
         composable(ProfileScreen.route) {
-            ProfileScreen(modifier = Modifier.padding(paddingValues)) {
+            ProfileScreen(modifier) {
                 navController.navigateSingleTopTo(WelcomeScreen.route)
                 mainViewModel.updateStartDestination()
 

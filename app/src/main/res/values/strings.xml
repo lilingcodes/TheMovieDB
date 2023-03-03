@@ -14,4 +14,9 @@
     <string name="upcoming">Upcoming</string>
     <string name="top_rated">Top rated</string>
     <string name="hint_search_query">Search</string>
+    <string name="username">Username</string>
+    <string name="username_already_exists">Username already exists</string>
+    <string name="next">Next</string>
+    <string name="create_a_username">Create a username</string>
+    <string name="create_a_username_text">Add a username. You can change it at any time.</string>
 </resources>

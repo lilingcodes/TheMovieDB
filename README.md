@@ -18,5 +18,6 @@ Este proyecto aún no ha sido completado, pero se planea utilizar estas tecnolog
 - Room
 - SQLite
 - Dagger Hilt
+- SharedPreferences 
 
 
