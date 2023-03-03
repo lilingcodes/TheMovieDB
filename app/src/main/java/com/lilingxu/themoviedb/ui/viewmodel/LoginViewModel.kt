@@ -26,7 +26,6 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val repository: AuthRepository,
     private val googleSignInClient: GoogleSignInClient,
-    private val firebaseAuth: FirebaseAuth,
 ) : ViewModel() {
 
     private val _email = MutableLiveData<String>("")

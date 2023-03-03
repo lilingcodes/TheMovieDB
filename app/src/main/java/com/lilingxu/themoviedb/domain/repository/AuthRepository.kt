@@ -9,4 +9,6 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
 
     fun loginWithCredential(credential: AuthCredential): Flow<ResultAPI<AuthResult>>
+
+    fun isValidUsername(username:String): Flow<ResultAPI<Boolean>>
 }

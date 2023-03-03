@@ -25,6 +25,10 @@ object LoginScreen : ScreenDestination {
     override val route = "login"
     override val icon = Icons.Filled.Home
 }
+object CreateUsernameScreen : ScreenDestination {
+    override val route = "createusername"
+    override val icon = Icons.Filled.Person
+}
 
 object RegisterScreen : ScreenDestination {
     override val route = "register"
