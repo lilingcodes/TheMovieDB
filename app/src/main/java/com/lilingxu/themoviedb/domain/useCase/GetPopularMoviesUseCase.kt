@@ -1,6 +1,6 @@
 package com.lilingxu.themoviedb.domain.useCase
 
-import com.lilingxu.themoviedb.data.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.ResultAPI
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.domain.repository.MovieRepository
 import javax.inject.Inject

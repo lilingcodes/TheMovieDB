@@ -1,6 +1,7 @@
 package com.lilingxu.themoviedb.ui.screens
 
 import android.content.Intent
+import android.util.Patterns
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -12,13 +13,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,25 +33,23 @@ import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.ui.components.EmailField
 import com.lilingxu.themoviedb.ui.components.HeaderImage
 import com.lilingxu.themoviedb.ui.components.PasswordField
+import com.lilingxu.themoviedb.ui.components.SimpleAlertDialog
 import com.lilingxu.themoviedb.ui.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
     forgotPasswordOnClick: () -> Unit,
     loginOnClick: () -> Unit,
-    createNewUser: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val email: String by viewModel.email.observeAsState("")
+    val isLoading: Boolean by viewModel.isLoading.observeAsState(false)
+    val username: String by viewModel.username.observeAsState("")
     val password: String by viewModel.password.observeAsState("")
     val isLoginEnable: Boolean by viewModel.isLoginEnable.observeAsState(false)
-    val isLogged: Boolean by viewModel.isLogged.observeAsState(false)
-    val isLoading: Boolean by viewModel.isLoading.observeAsState(false)
-    val showErrorMessage: Boolean by viewModel.error.observeAsState(false)
+    val errorMessage: String by viewModel.errorMessage.observeAsState("")
 
     val focusManager = LocalFocusManager.current
-
 
     if (isLoading) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -66,8 +65,8 @@ fun LoginScreen(
             HeaderImage()
             Spacer(Modifier.height(40.dp))
 
-            EmailField(
-                emailText = email,
+            UsernameField(
+                text = username,
                 onValueChange = { viewModel.onLoginChanged(it, password) },
                 focusManager = { focusManager.moveFocus(FocusDirection.Down) }
             )
@@ -76,7 +75,9 @@ fun LoginScreen(
             PasswordField(
                 label = stringResource(id = R.string.password),
                 password = password,
-                onValueChanged = { viewModel.onLoginChanged(email, it) },
+                onValueChanged = { password ->
+                    viewModel.onLoginChanged(username, password)
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
@@ -100,32 +101,45 @@ fun LoginScreen(
                 text = stringResource(id = R.string.login_in),
                 loginEnable = isLoginEnable,
                 loginButtonOnClick = {
-                    viewModel.login(loginOnClick)
+                    viewModel.loginWithUsernamePassword(username, password, loginOnClick)
                 }
             )
 
-            GoogleLoginButton(
-                text = stringResource(id = R.string.log_in_with_google),
-                handleLogin = {
-                    viewModel.loginWithCredential(it, loginOnClick, createNewUser)
-                },
-                onClick = {
-                    viewModel.loginWithGoogle(it)
+            if (errorMessage != "") {
+                SimpleAlertDialog(
+                    title = "There was an error processing your login",
+                    body = errorMessage
+                ) {
+                    viewModel.hiddenErrorMessage()
                 }
-
-            )
-
-            if (showErrorMessage) {
-                Text(
-                    text = "An error occurred. Please try again later.",
-                    color = Color.Red,
-                    modifier = Modifier.padding(top = 16.dp)
-                )
             }
         }
     }
 }
 
+@Composable
+fun UsernameField(
+    text: String,
+    onValueChange: (String) -> Unit,
+    focusManager: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = text,
+        onValueChange = onValueChange,
+        modifier = modifier.fillMaxWidth(),
+        label = { Text(stringResource(R.string.username)) },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text, imeAction = ImeAction.Next,
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = { focusManager() }
+        ),
+        singleLine = true,
+        maxLines = 1,
+    )
+
+}
 
 @Composable
 fun ForgotPasswordText(modifier: Modifier = Modifier) {
@@ -137,6 +151,7 @@ fun ForgotPasswordText(modifier: Modifier = Modifier) {
     )
 }
 
+
 @Composable
 fun LoginButton(text: String, loginEnable: Boolean, loginButtonOnClick: () -> Unit) {
     Button(
@@ -144,55 +159,6 @@ fun LoginButton(text: String, loginEnable: Boolean, loginButtonOnClick: () -> Un
         onClick = loginButtonOnClick,
         enabled = loginEnable
     ) {
-        Text(text = text)
-    }
-}
-
-@Composable
-fun GoogleLoginButton(
-    text: String,
-    handleLogin: (ActivityResult) -> Unit,
-    onClick: (ManagedActivityResultLauncher<Intent, ActivityResult>) -> Unit,
-) {
-
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            handleLogin(it)
-            /*val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
-
-            } catch (e: ApiException) {
-                Log.e("TAG", "Google sign in failed", e)
-            }*/
-        }
-
-   /* val context = LocalContext.current
-    val token = context.getString(R.string.default_web_client_id)*/
-    Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(),
-        onClick = { onClick(launcher) }
-           /* val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(token)
-                .requestEmail()
-                .build()
-
-            val googleSignInClient = GoogleSignIn.getClient(context, gso)
-
-            googleSignInClient.signOut()
-            launcher.launch(googleSignInClient.signInIntent)*/
-
-    ) {
-        Image(
-            modifier = Modifier
-                .heightIn(max = 15.dp)
-                .padding(end = 8.dp),
-            painter = painterResource(id = R.drawable.ic_google_login),
-            contentDescription = stringResource(id = R.string.log_in_with_google)
-        )
         Text(text = text)
     }
 }

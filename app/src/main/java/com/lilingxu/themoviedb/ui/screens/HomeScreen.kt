@@ -58,7 +58,7 @@ fun HomeScreen(
         }
     ) {
         LazyColumn(
-            modifier = modifier,//.heightIn(max = 2000.dp)
+            modifier = modifier,
         ) {
             item {
                 MySpacer()

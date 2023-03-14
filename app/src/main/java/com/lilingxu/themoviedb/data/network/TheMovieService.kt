@@ -1,8 +1,10 @@
 package com.lilingxu.themoviedb.data.network
 
-import com.lilingxu.themoviedb.data.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.ResultAPI
 import com.lilingxu.themoviedb.domain.model.Genre
 import com.lilingxu.themoviedb.data.model.MovieResponseDto
+import com.lilingxu.themoviedb.data.networkResult.logExceptionError
+import com.lilingxu.themoviedb.data.networkResult.logResponseError
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.domain.model.toDomain
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +17,6 @@ class TheMovieService @Inject constructor(
     private val api: TheMovieApi,
     @ApiToken private val token: String,
 ) {
-
     suspend fun getPopularMoviesService(): ResultAPI<List<Movie>> =
         getMoviesDomain(TheMovieApi::getPopularMoviesApi)
 
@@ -28,8 +29,8 @@ class TheMovieService @Inject constructor(
     suspend fun getTopRatedMoviesService(): ResultAPI<List<Movie>> =
         getMoviesDomain(TheMovieApi::getTopRatedMoviesApi)
 
-    suspend fun getMoviesByGenre(genreId: Int, page: Int = 1): ResultAPI<List<Movie>>{
-        return getMoviesDomain{
+    suspend fun getMoviesByGenre(genreId: Int, page: Int = 1): ResultAPI<List<Movie>> {
+        return getMoviesDomain {
             this.getMoviesByGenre(it, genreId, page)
         }
     }
@@ -43,21 +44,14 @@ class TheMovieService @Inject constructor(
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        ResultAPI.Success(
+                        return@withContext ResultAPI.Success(
                             body.results.map { it.toDomain() }
                         )
-                    } else {
-                        ResultAPI.Error("Empty response.")
-                    }
-                } else {
-                    when (response.code()) {
-                        401 -> ResultAPI.Error("Invalid API key: You must be granted a valid key.")
-                        404 -> ResultAPI.Error("The resource you requested could not be found.")
-                        else -> ResultAPI.Error("Unknown error.")
                     }
                 }
+                logResponseError(response, "getMoviesDomain")
             } catch (e: IOException) {
-                ResultAPI.Error(message = "Couldn't reach server, check your internet connection")
+                logExceptionError(e)
             }
         }
     }
@@ -69,20 +63,12 @@ class TheMovieService @Inject constructor(
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        ResultAPI.Success(body.genres)
-                    } else {
-                        ResultAPI.Error("Empty response.")
-                    }
-                }else {
-                    when (response.code()) {
-                        401 -> ResultAPI.Error("Invalid API key: You must be granted a valid key.")
-                        404 -> ResultAPI.Error("The resource you requested could not be found.")
-                        else -> ResultAPI.Error("Unknown error.")
+                        return@withContext ResultAPI.Success(body.genres)
                     }
                 }
+                logResponseError(response,"getGenresTypeService")
             } catch (e: IOException) {
-                ResultAPI.Error(message = "Couldn't reach server, check your internet connection")
-
+                logExceptionError(e)
             }
         }
     }

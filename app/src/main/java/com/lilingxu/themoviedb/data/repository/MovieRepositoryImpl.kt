@@ -1,6 +1,6 @@
 package com.lilingxu.themoviedb.data.repository
 
-import com.lilingxu.themoviedb.data.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.ResultAPI
 import com.lilingxu.themoviedb.data.network.TheMovieService
 import com.lilingxu.themoviedb.domain.model.Genre
 import com.lilingxu.themoviedb.domain.model.Movie

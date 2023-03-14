@@ -60,7 +60,7 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideUserCollection(db: FirebaseFirestore): CollectionReference = db.collection("users")
+    fun provideUsersCollection(db: FirebaseFirestore): CollectionReference = db.collection("users")
 
     @Singleton
     @Provides

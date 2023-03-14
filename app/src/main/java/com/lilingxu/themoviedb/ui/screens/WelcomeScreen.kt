@@ -1,5 +1,6 @@
 package com.lilingxu.themoviedb.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -11,14 +12,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lilingxu.themoviedb.R
+import com.lilingxu.themoviedb.TheMovieDBApplication.Companion.sharedPref
 
 
 @Composable
 fun WelcomeScreen(
-    modifier: Modifier = Modifier,
+    context: Context,
     loginOnClick: () -> Unit,
-    registerOnClick: () -> Unit,
+    theMovieDBRegisterOnClick: (Context) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
+    sharedPref.clear()
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -29,10 +33,16 @@ fun WelcomeScreen(
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(40.dp))
-        Button(modifier = Modifier.fillMaxWidth(), onClick = loginOnClick) {
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = loginOnClick
+        ) {
             Text(text = stringResource(id = R.string.login_in))
         }
-        Button(modifier = Modifier.fillMaxWidth(), onClick = registerOnClick) {
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { theMovieDBRegisterOnClick(context) }
+        ) {
             Text(text = stringResource(id = R.string.register))
         }
     }

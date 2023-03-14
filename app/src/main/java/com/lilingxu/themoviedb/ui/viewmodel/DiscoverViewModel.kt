@@ -3,7 +3,7 @@ package com.lilingxu.themoviedb.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lilingxu.themoviedb.data.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.ResultAPI
 import com.lilingxu.themoviedb.domain.model.Genre
 import com.lilingxu.themoviedb.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

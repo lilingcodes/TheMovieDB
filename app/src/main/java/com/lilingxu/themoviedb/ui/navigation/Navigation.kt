@@ -1,6 +1,6 @@
 package com.lilingxu.themoviedb.ui.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
+import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,6 +16,7 @@ import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 
 @Composable
 fun Navigation(
+    context: Context,
     navController: NavHostController,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = hiltViewModel(),
@@ -24,43 +25,40 @@ fun Navigation(
     val startDestination = mainViewModel.startDestination.collectAsState().value
     mainViewModel.updateStartDestination()
 
-    NavHost(navController = navController, startDestination = CreateUsernameScreen.route) {
+    NavHost(navController = navController, startDestination = startDestination) {
 
         composable(WelcomeScreen.route) {
             WelcomeScreen(
+                context = context,
                 loginOnClick = { navController.navigate(LoginScreen.route) },
-                registerOnClick = { navController.navigate(RegisterScreen.route) },
-                modifier = modifier
+                theMovieDBRegisterOnClick = {
+                    mainViewModel.registerWithTMDB(it)
+                    navController.navigate(AuthRequestScreen.route)
+
+                },
+                modifier = modifier.padding(16.dp)
             )
         }
 
         composable(LoginScreen.route) {
             LoginScreen(
-                forgotPasswordOnClick = { navController.navigate(RegisterScreen.route) },
+                forgotPasswordOnClick = { /*TODO*/ },
                 loginOnClick = {
                     navController.navigateSingleTopTo(HomeScreen.route)
                     mainViewModel.updateStartDestination()
                 },
-                createNewUser = { navController.navigate(CreateUsernameScreen.route) },
-                modifier = modifier,
+                modifier = modifier.padding(16.dp),
             )
         }
 
-        composable(RegisterScreen.route) {
-            RegisterScreen(
-                registerOnClick = {
-                    navController.navigate(CreateUsernameScreen.route)
-                },
-                modifier = modifier,
+        composable(AuthRequestScreen.route) {
+            AuthRequestScreen(
+                onSuccess= {navController.navigateSingleTopTo(LoginScreen.route)},
+                onFail = {navController.navigateSingleTopTo(WelcomeScreen.route)},
+                modifier = modifier.padding(16.dp),
             )
         }
 
-        composable(CreateUsernameScreen.route) {
-            CreateUsernameScreen(
-                nextOnClick = { navController.navigateSingleTopTo(HomeScreen.route) },
-                modifier = modifier
-            )
-        }
 
         composable(HomeScreen.route) {
             HomeScreen(modifier)
@@ -136,5 +134,3 @@ fun NavHostController.navigateToGenre(genreId: Int, genreName: String) =
         }
 
     }
-
-
