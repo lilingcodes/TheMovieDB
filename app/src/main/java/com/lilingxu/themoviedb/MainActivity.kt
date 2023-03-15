@@ -1,5 +1,6 @@
 package com.lilingxu.themoviedb
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -58,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    Navigation(context,navController, Modifier.padding(it))
+                    Navigation(context, navController, Modifier.padding(it))
 
                 }
             }

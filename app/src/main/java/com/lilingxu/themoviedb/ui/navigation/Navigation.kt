@@ -11,7 +11,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.lilingxu.themoviedb.ui.screens.*
+import com.lilingxu.themoviedb.ui.view.*
 import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 
 @Composable

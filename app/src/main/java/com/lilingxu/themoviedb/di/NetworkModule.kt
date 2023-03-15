@@ -2,8 +2,7 @@ package com.lilingxu.themoviedb.di
 
 import com.google.gson.GsonBuilder
 import com.lilingxu.themoviedb.data.network.*
-import com.lilingxu.themoviedb.data.repository.MovieRepositoryImpl
-import com.lilingxu.themoviedb.domain.repository.MovieRepository
+import com.lilingxu.themoviedb.data.network.apis.*
 import com.lilingxu.themoviedb.utils.AUTH_TOKEN
 import com.lilingxu.themoviedb.utils.BASE_URL
 import dagger.Module
@@ -20,18 +19,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideTheMovieApi(): TheMovieApi {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(TheMovieApi::class.java)
-    }
-
-
-
-    @Singleton
-    @Provides
     @ApiToken
     fun provideAuthToken(): String {
         return AUTH_TOKEN
@@ -39,6 +26,42 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideMovieRepository(api: TheMovieService): MovieRepository = MovieRepositoryImpl(api)
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .build()
+
+    }
+
+    @Singleton
+    @Provides
+    fun provideAccountApi(retrofit: Retrofit): AccountApi {
+        return retrofit.create(AccountApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthenticationApi(retrofit: Retrofit): AuthenticationApi {
+        return retrofit.create(AuthenticationApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi {
+        return retrofit.create(DiscoverApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGenresApi(retrofit: Retrofit): GenresApi {
+        return retrofit.create(GenresApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieApi(retrofit: Retrofit): MoviesApi {
+        return retrofit.create(MoviesApi::class.java)
+    }
 
 }

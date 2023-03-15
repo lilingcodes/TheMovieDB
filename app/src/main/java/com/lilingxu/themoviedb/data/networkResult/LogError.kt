@@ -6,17 +6,17 @@ import com.lilingxu.themoviedb.data.model.StatusCodeDto
 import retrofit2.Response
 import java.io.IOException
 
-fun <T, Y> logResponseError(response: Response<T>, name: String = ""): ResultAPI<Y> {
+fun <T, Y> logResponseError(response: Response<T>, name: String = ""): Resource<Y> {
     val status = getStatusCode(response)
     val message = status.status_message
     Log.e("remoteResponse", "Error ${status.status_code} in $name: $message ")
-    return ResultAPI.Error(message)
+    return Resource.Error(message)
 }
 
-fun <T> logExceptionError(e: IOException, name: String = ""): ResultAPI<T> {
+fun <T> logExceptionError(e: IOException, name: String = ""): Resource<T> {
     val message = e.message ?: e.toString()
     Log.e("remoteException", "$message in $name")
-    return ResultAPI.Error(message)
+    return Resource.Error(message)
 }
 
 fun <T> getStatusCode(response: Response<T>) : StatusCodeDto{

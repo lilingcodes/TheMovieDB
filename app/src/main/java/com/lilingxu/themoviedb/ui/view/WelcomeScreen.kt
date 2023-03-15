@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.ui.screens
+package com.lilingxu.themoviedb.ui.view
 
 import android.content.Context
 import androidx.compose.foundation.Image

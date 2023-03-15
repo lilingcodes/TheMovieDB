@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.ui.screens
+package com.lilingxu.themoviedb.ui.view
 
 import androidx.compose.material.Button
 import androidx.compose.material.Text

@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lilingxu.themoviedb.TheMovieDBApplication.Companion.sharedPref
-import com.lilingxu.themoviedb.data.networkResult.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.domain.repository.AuthRepository
 import com.lilingxu.themoviedb.ui.navigation.HomeScreen
@@ -17,7 +16,6 @@ import com.lilingxu.themoviedb.ui.navigation.WelcomeScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -51,7 +49,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.registerWithTMDB().collect {
                 when (it) {
-                    is ResultAPI.Success -> {
+                    is Resource.Success -> {
                         val requestToken = it.data ?: "success null"
                         Log.e("PRUEBAS1", "guardo token $requestToken")
                         _requestToken.value = requestToken
@@ -75,11 +73,11 @@ class MainViewModel @Inject constructor(
             Log.e("PRUEBAS", "get token request ${requestToken}")
             authRepository.createSession(requestToken).collect {
                 when (it) {
-                    is ResultAPI.Loading ->{
+                    is Resource.Loading ->{
                         Log.e("PRUEBAS", "SESSION LOADING")
 
                     }
-                    is ResultAPI.Success -> {
+                    is Resource.Success -> {
                         val sessionId = it.data ?: ""
                         sharedPref.setSessionId(sessionId)
                         _sessionId.value = sessionId
@@ -98,21 +96,21 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.getUserDetails(sessionId).collect {
                 when(it){
-                    is ResultAPI.Loading ->{
+                    is Resource.Loading ->{
                     }
-                    is ResultAPI.Success ->{
+                    is Resource.Success ->{
                         val account = it.data
                         if (account != null) {
                             authRepository.saveNewUser(sessionId, account).collect{
                                 when(it){
-                                    is ResultAPI.Loading ->{
+                                    is Resource.Loading ->{
 
                                     }
-                                    is ResultAPI.Success ->{
+                                    is Resource.Success ->{
                                         Log.e("PRUEBAS", "USER GURDADO")
 
                                     }
-                                    is ResultAPI.Error ->{
+                                    is Resource.Error ->{
                                         Log.e("PRUEBAS", "USER ERROR")
                                     }
                                 }
@@ -122,7 +120,7 @@ class MainViewModel @Inject constructor(
                         Log.e("PRUEBAS", "USER: ${sessionId}")
 
                     }
-                    is ResultAPI.Error ->{
+                    is Resource.Error ->{
                         Log.e("PRUEBAS", "USER ERROR ")
 
                     }

@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.ui.screens
+package com.lilingxu.themoviedb.ui.view
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box

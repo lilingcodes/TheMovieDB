@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.lilingxu.themoviedb.TheMovieDBApplication.Companion.sharedPref
-import com.lilingxu.themoviedb.data.networkResult.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -45,11 +44,11 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             repository.loginWithUsernamePassword(username, password).collect {
                 when (it) {
-                    is ResultAPI.Loading -> {
+                    is Resource.Loading -> {
                         _isLoading.value = true
                     }
 
-                    is ResultAPI.Success -> {
+                    is Resource.Success -> {
                         val isLoginSuccess = it.data
                         if (isLoginSuccess == true) {
                             sharedPref.setIsLogged(true)
@@ -60,7 +59,7 @@ class LoginViewModel @Inject constructor(
                         }
                     }
 
-                    is ResultAPI.Error -> {
+                    is Resource.Error -> {
                         _errorMessage.value = it.message
                         _isLoading.value = false
                     }

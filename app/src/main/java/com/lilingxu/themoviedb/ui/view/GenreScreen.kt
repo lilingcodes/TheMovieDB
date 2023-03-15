@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.ui.screens
+package com.lilingxu.themoviedb.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
