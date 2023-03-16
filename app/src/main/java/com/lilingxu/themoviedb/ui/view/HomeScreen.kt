@@ -17,11 +17,9 @@ import coil.compose.AsyncImage
 import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.domain.model.HomeData
 import com.lilingxu.themoviedb.domain.model.Movie
-import com.lilingxu.themoviedb.ui.components.BottomSheetContent
 import com.lilingxu.themoviedb.ui.components.MySpacer
 import com.lilingxu.themoviedb.ui.theme.Grey
 import com.lilingxu.themoviedb.ui.viewmodel.HomeViewModel
-import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 import com.lilingxu.themoviedb.utils.IMAGE_BASE_URL
 import kotlinx.coroutines.launch
 
@@ -29,9 +27,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
+    sheetContent: @Composable() (ColumnScope.() -> Unit),
+    setSheetContent: (Movie) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    mainViewModel: MainViewModel = hiltViewModel()
 ) {
     //val isLoading: Boolean by viewModel.isLoading.observeAsState(false)
     val popularList: List<Movie> by viewModel.popularMovies.observeAsState(emptyList())
@@ -39,10 +38,10 @@ fun HomeScreen(
     val upcomingList: List<Movie> by viewModel.upcomingMovies.observeAsState(emptyList())
     val topRatedList: List<Movie> by viewModel.topRatedMovies.observeAsState(emptyList())
 
-    val sheetMovie: Movie by mainViewModel.sheetMovie.observeAsState(Movie())
 
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+
     val homeDataList = listOf(
         HomeData(R.string.popular, popularList),
         HomeData(R.string.now_playing, nowPlayingList),
@@ -50,11 +49,10 @@ fun HomeScreen(
         HomeData(R.string.top_rated, topRatedList)
     )
 
-
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
-            BottomSheetContent(sheetMovie)
+            sheetContent()
         }
     ) {
         LazyColumn(
@@ -69,7 +67,7 @@ fun HomeScreen(
                     title = stringResource(id = homeData.title),
                     moviesList = homeData.movieList,
                     onClick = { movie ->
-                        mainViewModel.setSheetMovie(movie)
+                        setSheetContent(movie)
                         scope.launch {
                             sheetState.show()
                         }
@@ -134,7 +132,6 @@ fun MovieItem(
                 }
         )
     }
-
 }
 
 

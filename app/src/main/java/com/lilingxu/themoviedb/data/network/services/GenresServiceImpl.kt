@@ -16,6 +16,7 @@ class GenresServiceImpl @Inject constructor(
 
     override suspend fun getMovieGenresList(): Resource<List<Genre>> {
         return getApiResource(
+            name = "getMovieGenresList",
             apiResponse = { genresApi.getMovieList(token) },
             onSuccess = { genreResponseDto ->
                 genreResponseDto.genres

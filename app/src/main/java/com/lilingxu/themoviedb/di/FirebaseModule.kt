@@ -54,10 +54,9 @@ object FirebaseModule {
     fun provideFirebaseStorage(): StorageReference =
         FirebaseStorage.getInstance().reference.child("profilePics")
 
-
     @Provides
     @Singleton
-    fun provideUsersCollection(db: FirebaseFirestore): CollectionReference = db.collection("users")
+    fun provideUsersCollection(db: FirebaseFirestore): CollectionReference = db.collection("accounts")
 
 
 }

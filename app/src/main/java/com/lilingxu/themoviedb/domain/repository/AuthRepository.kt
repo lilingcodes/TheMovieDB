@@ -7,23 +7,26 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-   /* fun loginWithCredential(credential: AuthCredential): Flow<ResultAPI<AuthResult>>
+    /* fun loginWithCredential(credential: AuthCredential): Flow<ResultAPI<AuthResult>>
 
-    fun createUserWithEmailPassword(email: String, password: String): Flow<ResultAPI<Boolean>>
+     fun createUserWithEmailPassword(email: String, password: String): Flow<ResultAPI<Boolean>>
 
-    fun isUsernameExist(username: String): Flow<ResultAPI<Boolean>>
+     fun isUsernameExist(username: String): Flow<ResultAPI<Boolean>>
 
-    fun isEmailRegistered(email: String): Flow<ResultAPI<Boolean>>*/
+     fun isEmailRegistered(email: String): Flow<ResultAPI<Boolean>>*/
     fun loginWithUsernamePassword(username: String, password: String): Flow<Resource<Boolean>>
 
-    fun registerWithTMDB(): Flow<Resource<String>>
+    suspend fun getAccountSessionId(username: String): Resource<String>
 
-    fun createSession(requestToken: String): Flow<Resource<String>>
+    suspend fun registerWithTMDB(): Resource<String>
 
-    fun saveNewUser(sessionId:String, account: Account): Flow<Resource<Boolean>>
+    suspend fun createSession(requestToken: String): Resource<String>
 
-    fun getUserDetails(sessionId:String): Flow<Resource<Account>>
+    suspend fun saveNewAccount(newAccount: Account): Resource<Boolean>
 
+    suspend fun getAccountDetails(sessionId: String): Resource<Account>
+
+    suspend fun deleteSession(sessionId: String): Resource<Boolean>
 
 
 }

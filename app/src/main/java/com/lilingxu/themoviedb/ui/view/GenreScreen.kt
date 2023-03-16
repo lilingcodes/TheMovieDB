@@ -1,6 +1,7 @@
 package com.lilingxu.themoviedb.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.*
@@ -13,9 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lilingxu.themoviedb.domain.model.Movie
-import com.lilingxu.themoviedb.ui.components.BottomSheetContent
 import com.lilingxu.themoviedb.ui.viewmodel.GenreViewModel
-import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
@@ -26,16 +25,14 @@ fun GenreScreen(
     genreId: Int,
     genreName: String,
     arrowBackOnClick: () -> Unit,
+    sheetContent: @Composable() (ColumnScope.() -> Unit),
+    setSheetContent: (Movie) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GenreViewModel = hiltViewModel(),
-    mainViewModel: MainViewModel = hiltViewModel(),
-
     ) {
 
     val movieList: List<Movie> by viewModel.movieList.observeAsState(emptyList())
     val isLoading by viewModel.isLoading.observeAsState(false)
-
-    val sheetMovie: Movie by mainViewModel.sheetMovie.observeAsState(Movie())
 
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val listState = rememberLazyGridState()
@@ -46,7 +43,7 @@ fun GenreScreen(
         modifier = modifier,
         sheetState = sheetState,
         sheetContent = {
-            BottomSheetContent(sheetMovie)
+            sheetContent()
         }
     ) {
         Scaffold(
@@ -64,7 +61,7 @@ fun GenreScreen(
             }
         ) {
             MovieGrid(movieList, listState, it, movieOnClick = { movie ->
-                mainViewModel.setSheetMovie(movie)
+                setSheetContent(movie)
                 scope.launch {
                     sheetState.show()
                 }

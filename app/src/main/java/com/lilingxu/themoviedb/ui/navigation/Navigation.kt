@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,6 +13,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.lilingxu.themoviedb.domain.model.Movie
+import com.lilingxu.themoviedb.ui.components.BottomSheetContent
 import com.lilingxu.themoviedb.ui.view.*
 import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 
@@ -22,6 +26,7 @@ fun Navigation(
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
 
+    val sheetMovie: Movie by mainViewModel.sheetMovie.observeAsState(Movie())
     val startDestination = mainViewModel.startDestination.collectAsState().value
     mainViewModel.updateStartDestination()
 
@@ -53,15 +58,23 @@ fun Navigation(
 
         composable(AuthRequestScreen.route) {
             AuthRequestScreen(
-                onSuccess= {navController.navigateSingleTopTo(LoginScreen.route)},
-                onFail = {navController.navigateSingleTopTo(WelcomeScreen.route)},
+                onSuccess = { navController.navigateSingleTopTo(LoginScreen.route) },
+                onFail = { navController.navigateSingleTopTo(WelcomeScreen.route) },
                 modifier = modifier.padding(16.dp),
             )
         }
 
 
         composable(HomeScreen.route) {
-            HomeScreen(modifier)
+            HomeScreen(
+                sheetContent = {
+                    BottomSheetContent(sheetMovie)
+                },
+                setSheetContent = { movie ->
+                    mainViewModel.setSheetMovie(movie)
+                },
+                modifier = modifier
+            )
         }
 
         composable(DiscoverScreen.route) {
@@ -85,6 +98,10 @@ fun Navigation(
                 genreType,
                 genreName,
                 arrowBackOnClick = { navController.popBackStack() },
+                sheetContent = { BottomSheetContent(sheetMovie) },
+                setSheetContent = { movie ->
+                    mainViewModel.setSheetMovie(movie)
+                },
                 modifier
             )
         }

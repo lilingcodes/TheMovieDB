@@ -1,14 +1,12 @@
 package com.lilingxu.themoviedb.data.network.apis
 
 import com.google.gson.JsonObject
+import com.lilingxu.themoviedb.data.model.authentication.DeleteDto
 import com.lilingxu.themoviedb.data.model.LoginModel
-import com.lilingxu.themoviedb.data.model.SessionDto
-import com.lilingxu.themoviedb.data.model.TokenDto
+import com.lilingxu.themoviedb.data.model.authentication.SessionDto
+import com.lilingxu.themoviedb.data.model.authentication.TokenDto
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface AuthenticationApi {
 
@@ -28,5 +26,13 @@ interface AuthenticationApi {
         @Query("api_key") token: String,
         @Body body: LoginModel,
     ): Response<TokenDto>
+
+    //@DELETE("authentication/session")
+    @HTTP(method = "DELETE", path = "authentication/session", hasBody = true)
+    suspend fun deleteSession(
+        @Query("api_key") token: String,
+        @Body body: JsonObject,
+    ): Response<DeleteDto>
+
 
 }

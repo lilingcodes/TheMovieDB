@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.data.model
+package com.lilingxu.themoviedb.data.model.movie
 
 import com.google.gson.annotations.SerializedName
 

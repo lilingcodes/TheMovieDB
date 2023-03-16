@@ -24,12 +24,6 @@ class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val _requestToken = MutableLiveData<String>("")
-    val requestToken: MutableLiveData<String> get() = _requestToken
-
-    private val _sessionId = MutableLiveData<String>("")
-    val sessionId: MutableLiveData<String> get() = _sessionId
-
     private val _startDestination = MutableStateFlow(WelcomeScreen.route)
     val startDestination: StateFlow<String> get() = _startDestination
 
@@ -47,87 +41,21 @@ class MainViewModel @Inject constructor(
 
     fun registerWithTMDB(context: Context) {
         viewModelScope.launch {
-            authRepository.registerWithTMDB().collect {
-                when (it) {
-                    is Resource.Success -> {
-                        val requestToken = it.data ?: "success null"
-                        Log.e("PRUEBAS1", "guardo token $requestToken")
-                        _requestToken.value = requestToken
-                        sharedPref.setRequestToken(requestToken)
-                        val urlIntent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://www.themoviedb.org/authenticate/$requestToken")
-                        )
-                        context.startActivity(urlIntent)
-                    }
-                    else -> {
+            when (val resource = authRepository.registerWithTMDB()) {
+                is Resource.Success -> {
+                    val requestToken = resource.data ?: "success null"
+                    Log.e("PRUEBAS1", "guardo token $requestToken")
+                    sharedPref.setRequestToken(requestToken)
+                    val urlIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.themoviedb.org/authenticate/$requestToken")
+                    )
+                    context.startActivity(urlIntent)
+                }
+                else -> {
 
-                    }
                 }
             }
         }
     }
-
-    fun createSessionIdWithToken(requestToken: String) {
-        viewModelScope.launch {
-            Log.e("PRUEBAS", "get token request ${requestToken}")
-            authRepository.createSession(requestToken).collect {
-                when (it) {
-                    is Resource.Loading ->{
-                        Log.e("PRUEBAS", "SESSION LOADING")
-
-                    }
-                    is Resource.Success -> {
-                        val sessionId = it.data ?: ""
-                        sharedPref.setSessionId(sessionId)
-                        _sessionId.value = sessionId
-                        saveNewUser(sessionId)
-                        Log.e("PRUEBAS", "SESSION: ${sessionId}")
-                    }
-                    else -> {
-                        Log.e("PRUEBAS", "SESSION FALLIDA")
-                    }
-                }
-            }
-        }
-    }
-
-    fun saveNewUser(sessionId: String) {
-        viewModelScope.launch {
-            authRepository.getUserDetails(sessionId).collect {
-                when(it){
-                    is Resource.Loading ->{
-                    }
-                    is Resource.Success ->{
-                        val account = it.data
-                        if (account != null) {
-                            authRepository.saveNewUser(sessionId, account).collect{
-                                when(it){
-                                    is Resource.Loading ->{
-
-                                    }
-                                    is Resource.Success ->{
-                                        Log.e("PRUEBAS", "USER GURDADO")
-
-                                    }
-                                    is Resource.Error ->{
-                                        Log.e("PRUEBAS", "USER ERROR")
-                                    }
-                                }
-                            }
-                        }
-                        
-                        Log.e("PRUEBAS", "USER: ${sessionId}")
-
-                    }
-                    is Resource.Error ->{
-                        Log.e("PRUEBAS", "USER ERROR ")
-
-                    }
-                }
-            }
-        }
-    }
-    
-    
 }

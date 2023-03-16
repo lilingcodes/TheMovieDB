@@ -1,8 +1,7 @@
 package com.lilingxu.themoviedb.di
 
-import com.lilingxu.themoviedb.data.network.services.DiscoverService
-import com.lilingxu.themoviedb.data.network.services.GenresService
-import com.lilingxu.themoviedb.data.network.services.MovieService
+import com.lilingxu.themoviedb.data.network.firebase.AccountDAO
+import com.lilingxu.themoviedb.data.network.services.*
 import com.lilingxu.themoviedb.data.repository.AuthRepositoryImpl
 import com.lilingxu.themoviedb.data.repository.MovieRepositoryImpl
 import com.lilingxu.themoviedb.domain.repository.AuthRepository
@@ -27,8 +26,10 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideLoginRepository(): AuthRepository =
-        AuthRepositoryImpl()
-
-    //TODO pasarle los
+    fun provideLoginRepository(
+        accountDAO: AccountDAO,
+        authService: AuthenticationService,
+        accountService: AccountService,
+    ): AuthRepository =
+        AuthRepositoryImpl(accountDAO, authService, accountService)
 }

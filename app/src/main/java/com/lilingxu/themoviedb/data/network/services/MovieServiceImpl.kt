@@ -17,6 +17,7 @@ class MovieServiceImpl @Inject constructor(
 
     override suspend fun getPopular(): Resource<List<Movie>> {
         return getApiResource(
+            name = "getPopular",
             apiResponse = { moviesApi.getPopular(token) },
             onSuccess = { movieResponseDto ->
                 movieResponseDto.results.map { it.toDomain() }
@@ -26,6 +27,7 @@ class MovieServiceImpl @Inject constructor(
 
     override suspend fun getNowPlaying(): Resource<List<Movie>> {
         return getApiResource(
+            name = "getNowPlaying",
             apiResponse = { moviesApi.getNowPlaying(token) },
             onSuccess = { movieResponseDto ->
                 movieResponseDto.results.map { it.toDomain() }
@@ -35,6 +37,7 @@ class MovieServiceImpl @Inject constructor(
 
     override suspend fun getUpcoming(): Resource<List<Movie>> {
         return getApiResource(
+            name = "getUpcoming",
             apiResponse = { moviesApi.getUpcoming(token) },
             onSuccess = { movieResponseDto ->
                 movieResponseDto.results.map { it.toDomain() }
@@ -44,6 +47,7 @@ class MovieServiceImpl @Inject constructor(
 
     override suspend fun getTopRated(): Resource<List<Movie>> {
         return getApiResource(
+            name = "getTopRated",
             apiResponse = { moviesApi.getTopRated(token) },
             onSuccess = { movieResponseDto ->
                 movieResponseDto.results.map { it.toDomain() }

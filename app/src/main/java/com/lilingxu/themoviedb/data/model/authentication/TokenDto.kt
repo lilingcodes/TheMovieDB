@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.data.model
+package com.lilingxu.themoviedb.data.model.authentication
 
 data class TokenDto(
     val success: Boolean,

@@ -1,4 +1,4 @@
-package com.lilingxu.themoviedb.data.model
+package com.lilingxu.themoviedb.data.model.authentication
 
 data class SessionDto(
     val session_id: String,

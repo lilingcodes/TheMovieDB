@@ -1,6 +1,6 @@
 package com.lilingxu.themoviedb.domain.model
 
-import com.lilingxu.themoviedb.data.model.MovieDto
+import com.lilingxu.themoviedb.data.model.movie.MovieDto
 
 data class Movie(
     val id: Int = 0,

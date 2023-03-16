@@ -17,6 +17,7 @@ class AccountServiceImpl @Inject constructor(
 
     override suspend fun getAccountDetails(sessionId: String): Resource<Account> {
         return getApiResource(
+            name = "getAccountDetails",
             apiResponse ={ accountApi.getAccountDetails(token, sessionId)},
             onSuccess = {accountDto->
                 accountDto.toDomain()

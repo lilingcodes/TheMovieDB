@@ -17,6 +17,7 @@ class AuthenticationServiceImpl @Inject constructor(
 
     override suspend fun createRequestToken(): Resource<String> {
         return getApiResource(
+            name = "createRequestToken",
             apiResponse = { authenticationApi.createRequestToken(token) },
             onSuccess = { tokenDto ->
                 tokenDto.request_token
@@ -29,6 +30,7 @@ class AuthenticationServiceImpl @Inject constructor(
         requestBody.addProperty("request_token", requestToken)
 
         return getApiResource(
+            name = "createSession",
             apiResponse = { authenticationApi.createSession(token, requestBody) },
             onSuccess = { sessionDto ->
                 sessionDto.session_id
@@ -38,9 +40,22 @@ class AuthenticationServiceImpl @Inject constructor(
 
     override suspend fun createSessionWithLogin(body: LoginModel): Resource<String> {
         return getApiResource(
+            name = "createSessionWithLogin",
             apiResponse = { authenticationApi.createSessionWithLogin(token, body) },
             onSuccess = { tokenDto ->
                 tokenDto.request_token
+            }
+        )
+    }
+
+    override suspend fun deleteSession(sessionId: String): Resource<Boolean> {
+        val requestBody = JsonObject()
+        requestBody.addProperty("session_id", sessionId)
+        return getApiResource(
+            name = "deleteSession",
+            apiResponse = { authenticationApi.deleteSession(token, requestBody)},
+            onSuccess = { deleteDto->
+                deleteDto.success
             }
         )
     }

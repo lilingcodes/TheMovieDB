@@ -22,7 +22,6 @@ class DiscoverViewModel @Inject constructor(
         getGenres()
     }
 
-    //TODO llamar una vez y guardarlo en local
     private fun getGenres(){
         viewModelScope.launch {
             when(val result = repository.getGenresTypeList()){

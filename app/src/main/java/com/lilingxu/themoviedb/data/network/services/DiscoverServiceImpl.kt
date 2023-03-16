@@ -17,6 +17,7 @@ class DiscoverServiceImpl @Inject constructor(
 
     override suspend fun getMoviesByGenre(genreId: Int, page: Int): Resource<List<Movie>> {
         return getApiResource(
+            name = "getMoviesByGenre",
             apiResponse = { discoverApi.getMoviesByGenre(token, genreId, page) },
             onSuccess = { movieResponseDto ->
                 movieResponseDto.results.map { it.toDomain() }

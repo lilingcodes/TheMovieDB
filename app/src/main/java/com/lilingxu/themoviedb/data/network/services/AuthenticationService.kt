@@ -11,4 +11,6 @@ interface AuthenticationService {
 
     suspend fun createSessionWithLogin(body: LoginModel): Resource<String>
 
+    suspend fun deleteSession(sessionId: String): Resource<Boolean>
+
 }

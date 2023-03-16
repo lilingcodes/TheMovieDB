@@ -1,10 +1,17 @@
 package com.lilingxu.themoviedb.domain.model
 
-import com.lilingxu.themoviedb.data.model.AccountDto
+import com.lilingxu.themoviedb.data.model.account.AccountDto
 
-class Account(
-    val username: String = "",
-    val avatar_path: String = "",
-)
+data class Account(
+    val accountId: Int,
+    val username: String,
+    var sessionId: String?,
+    val avatar_path: String?,
+) {
+    constructor() : this(0, "", null, null)
+}
 
-fun AccountDto.toDomain() = Account(username, avatar.tmdb.avatar_path)
+fun AccountDto.toDomain() =
+    Account(accountId = id, username = username, sessionId = null, avatar_path = null)
+
+

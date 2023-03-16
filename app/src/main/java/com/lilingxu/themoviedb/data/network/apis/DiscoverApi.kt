@@ -1,6 +1,6 @@
 package com.lilingxu.themoviedb.data.network.apis
 
-import com.lilingxu.themoviedb.data.model.MovieResponseDto
+import com.lilingxu.themoviedb.data.model.movie.MovieResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
