@@ -23,14 +23,15 @@ import com.lilingxu.themoviedb.ui.theme.TheMovieDBTheme
 import com.lilingxu.themoviedb.utils.IMAGE_BASE_URL
 
 @Composable
-fun BottomSheetContent(movie: Movie) {
+fun BottomSheetContent(movie: Movie, modifier: Modifier = Modifier) {
     Surface(
-        modifier = Modifier
-            .heightIn(min = 350.dp, max = 350.dp)
-            .padding(16.dp)
+        modifier = modifier
+            .heightIn(max = 350.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
         ) {
             MoviePreviewCard(movie)
             Divider(
@@ -132,8 +133,8 @@ fun Preview() {
             5.91,
             "/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg"
         )
-        MoviePreviewCard(movie)*/
-        MoviePreviewActions()
+        BottomSheetContent(movie)*/
+        //MoviePreviewActions()
 
 
     }

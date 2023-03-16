@@ -9,8 +9,6 @@ class SharedPref(context: Context) {
     val REQUEST_TOKEN= "request token"
     val SESSION_ID_KEY = "session id"
 
-    val IS_LOGGED_KEY = "is logged"
-
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
 
@@ -23,12 +21,6 @@ class SharedPref(context: Context) {
     fun getSessionId(): String = sharedPref.getString(SESSION_ID_KEY, "")!!
     fun setSessionId(sessionId: String) =
         sharedPref.edit().putString(SESSION_ID_KEY, sessionId).apply()
-
-
-    fun getIsLogged(): Boolean = sharedPref.getBoolean(IS_LOGGED_KEY, false)
-    fun setIsLogged(isLogged: Boolean) =
-        sharedPref.edit().putBoolean(IS_LOGGED_KEY, isLogged).apply()
-
 
 
     fun clear() {

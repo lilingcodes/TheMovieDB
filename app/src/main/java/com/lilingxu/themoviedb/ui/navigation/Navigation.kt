@@ -3,7 +3,6 @@ package com.lilingxu.themoviedb.ui.navigation
 import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ fun Navigation(
 ) {
 
     val sheetMovie: Movie by mainViewModel.sheetMovie.observeAsState(Movie())
-    val startDestination = mainViewModel.startDestination.collectAsState().value
+    val startDestination: String by mainViewModel.startDestination.observeAsState(WelcomeScreen.route)
     mainViewModel.updateStartDestination()
 
     NavHost(navController = navController, startDestination = startDestination) {
@@ -67,9 +66,7 @@ fun Navigation(
 
         composable(HomeScreen.route) {
             HomeScreen(
-                sheetContent = {
-                    BottomSheetContent(sheetMovie)
-                },
+                sheetContent = { BottomSheetContent(sheetMovie, modifier) },
                 setSheetContent = { movie ->
                     mainViewModel.setSheetMovie(movie)
                 },
@@ -98,7 +95,7 @@ fun Navigation(
                 genreType,
                 genreName,
                 arrowBackOnClick = { navController.popBackStack() },
-                sheetContent = { BottomSheetContent(sheetMovie) },
+                sheetContent = { BottomSheetContent(sheetMovie, modifier) },
                 setSheetContent = { movie ->
                     mainViewModel.setSheetMovie(movie)
                 },

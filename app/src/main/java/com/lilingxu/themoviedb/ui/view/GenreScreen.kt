@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -40,6 +41,7 @@ fun GenreScreen(
 
 
     ModalBottomSheetLayout(
+        sheetShape = RoundedCornerShape(16.dp, 16.dp),
         modifier = modifier,
         sheetState = sheetState,
         sheetContent = {

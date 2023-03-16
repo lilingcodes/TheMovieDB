@@ -14,8 +14,6 @@ import com.lilingxu.themoviedb.domain.repository.AuthRepository
 import com.lilingxu.themoviedb.ui.navigation.HomeScreen
 import com.lilingxu.themoviedb.ui.navigation.WelcomeScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,8 +22,8 @@ class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val _startDestination = MutableStateFlow(WelcomeScreen.route)
-    val startDestination: StateFlow<String> get() = _startDestination
+    private val _startDestination = MutableLiveData(WelcomeScreen.route)
+    val startDestination: MutableLiveData<String> get() = _startDestination
 
     private val _sheetMovie = MutableLiveData<Movie>()
     val sheetMovie: MutableLiveData<Movie> get() = _sheetMovie
@@ -36,7 +34,8 @@ class MainViewModel @Inject constructor(
 
     fun updateStartDestination() {
         _startDestination.value =
-            if (sharedPref.getIsLogged()) HomeScreen.route else WelcomeScreen.route
+            if (sharedPref.getSessionId() == "") WelcomeScreen.route else HomeScreen.route
+        Log.e("Destination", "sesion actual: ${sharedPref.getSessionId()}")
     }
 
     fun registerWithTMDB(context: Context) {

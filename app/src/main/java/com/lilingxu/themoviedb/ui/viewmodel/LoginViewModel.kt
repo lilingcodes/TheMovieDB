@@ -52,7 +52,6 @@ class LoginViewModel @Inject constructor(
                         val isLoginSuccess = it.data
                         if (isLoginSuccess == true || repository.getAccountSessionId(username) is Resource.Success) {
                             val sessionId = repository.getAccountSessionId(username).data
-                            sharedPref.setIsLogged(true)
                             sharedPref.setSessionId(sessionId!!)
                             _isLoading.value = false
                             loginOnClick()

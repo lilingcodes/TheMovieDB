@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lilingxu.themoviedb.R
-import com.lilingxu.themoviedb.TheMovieDBApplication.Companion.sharedPref
 
 
 @Composable
@@ -22,7 +21,6 @@ fun WelcomeScreen(
     theMovieDBRegisterOnClick: (Context) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    sharedPref.clear()
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
