@@ -5,23 +5,23 @@ import android.content.SharedPreferences
 
 class SharedPref(context: Context) {
     val PREFERENCE_FILE_KEY = "my prefs"
-    val USER_ACCOUNT_KEY = "user account"
-    val IS_LOGGED_KEY = "is logged"
+
+    val REQUEST_TOKEN= "request token"
+    val SESSION_ID_KEY = "session id"
 
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
 
 
-    fun setUserAccount(email: String) =
-        sharedPref.edit().putString(USER_ACCOUNT_KEY, email).apply()
-
-    fun setIsLogged(isLogged: Boolean) =
-        sharedPref.edit().putBoolean(IS_LOGGED_KEY, isLogged).apply()
+    fun getRequestToken():String = sharedPref.getString(REQUEST_TOKEN, "")!!
+    fun setRequestToken(token: String) =
+        sharedPref.edit().putString(REQUEST_TOKEN, token).apply()
 
 
-    fun getUserAccount(): String = sharedPref.getString(USER_ACCOUNT_KEY, "")!!
+    fun getSessionId(): String = sharedPref.getString(SESSION_ID_KEY, "")!!
+    fun setSessionId(sessionId: String) =
+        sharedPref.edit().putString(SESSION_ID_KEY, sessionId).apply()
 
-    fun getIsLogged(): Boolean = sharedPref.getBoolean(IS_LOGGED_KEY, false)
 
     fun clear() {
         sharedPref.edit().clear().apply()

@@ -24,7 +24,8 @@ fun EmailField(
     onValueChange: (String) -> Unit,
     focusManager: () -> Unit,
     modifier: Modifier = Modifier,
-) {
+    trailingIcon: @Composable () -> Unit = {},
+    ) {
     var isEmailFormatValid: Boolean by remember { mutableStateOf(true) }
 
     Column(modifier = modifier) {
@@ -44,6 +45,7 @@ fun EmailField(
             ),
             singleLine = true,
             maxLines = 1,
+            trailingIcon = trailingIcon
         )
         if (!isEmailFormatValid) {
             Text(

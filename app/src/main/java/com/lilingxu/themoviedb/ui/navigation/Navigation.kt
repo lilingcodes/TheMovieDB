@@ -1,9 +1,10 @@
 package com.lilingxu.themoviedb.ui.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
+import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,59 +12,66 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.lilingxu.themoviedb.ui.screens.*
+import com.lilingxu.themoviedb.domain.model.Movie
+import com.lilingxu.themoviedb.ui.components.BottomSheetContent
+import com.lilingxu.themoviedb.ui.view.*
 import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 
 @Composable
 fun Navigation(
+    context: Context,
     navController: NavHostController,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
 
-    val startDestination = mainViewModel.startDestination.collectAsState().value
+    val sheetMovie: Movie by mainViewModel.sheetMovie.observeAsState(Movie())
+    val startDestination: String by mainViewModel.startDestination.observeAsState(WelcomeScreen.route)
     mainViewModel.updateStartDestination()
 
-    NavHost(navController = navController, startDestination = CreateUsernameScreen.route) {
+    NavHost(navController = navController, startDestination = startDestination) {
 
         composable(WelcomeScreen.route) {
             WelcomeScreen(
+                context = context,
                 loginOnClick = { navController.navigate(LoginScreen.route) },
-                registerOnClick = { navController.navigate(RegisterScreen.route) },
-                modifier = modifier
+                theMovieDBRegisterOnClick = {
+                    mainViewModel.registerWithTMDB(it)
+                    navController.navigate(AuthRequestScreen.route)
+
+                },
+                modifier = modifier.padding(16.dp)
             )
         }
 
         composable(LoginScreen.route) {
             LoginScreen(
-                forgotPasswordOnClick = { navController.navigate(RegisterScreen.route) },
+                forgotPasswordOnClick = { /*TODO*/ },
                 loginOnClick = {
                     navController.navigateSingleTopTo(HomeScreen.route)
                     mainViewModel.updateStartDestination()
                 },
-                createNewUser = { navController.navigate(CreateUsernameScreen.route) },
-                modifier = modifier,
+                modifier = modifier.padding(16.dp),
             )
         }
 
-        composable(RegisterScreen.route) {
-            RegisterScreen(
-                registerOnClick = {
-                    navController.navigate(CreateUsernameScreen.route)
-                },
-                modifier = modifier,
+        composable(AuthRequestScreen.route) {
+            AuthRequestScreen(
+                onSuccess = { navController.navigateSingleTopTo(LoginScreen.route) },
+                onFail = { navController.navigateSingleTopTo(WelcomeScreen.route) },
+                modifier = modifier.padding(16.dp),
             )
         }
 
-        composable(CreateUsernameScreen.route) {
-            CreateUsernameScreen(
-                nextOnClick = { navController.navigateSingleTopTo(HomeScreen.route) },
-                modifier = modifier
-            )
-        }
 
         composable(HomeScreen.route) {
-            HomeScreen(modifier)
+            HomeScreen(
+                sheetContent = { BottomSheetContent(sheetMovie, modifier) },
+                setSheetContent = { movie ->
+                    mainViewModel.setSheetMovie(movie)
+                },
+                modifier = modifier
+            )
         }
 
         composable(DiscoverScreen.route) {
@@ -87,6 +95,10 @@ fun Navigation(
                 genreType,
                 genreName,
                 arrowBackOnClick = { navController.popBackStack() },
+                sheetContent = { BottomSheetContent(sheetMovie, modifier) },
+                setSheetContent = { movie ->
+                    mainViewModel.setSheetMovie(movie)
+                },
                 modifier
             )
         }
@@ -136,5 +148,3 @@ fun NavHostController.navigateToGenre(genreId: Int, genreName: String) =
         }
 
     }
-
-

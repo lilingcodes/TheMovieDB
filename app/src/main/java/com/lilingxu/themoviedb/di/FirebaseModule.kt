@@ -10,10 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.lilingxu.themoviedb.R
-import com.lilingxu.themoviedb.data.network.AuthService
 import com.lilingxu.themoviedb.data.network.GoogleToken
-import com.lilingxu.themoviedb.data.repository.AuthRepositoryImpl
-import com.lilingxu.themoviedb.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,14 +54,9 @@ object FirebaseModule {
     fun provideFirebaseStorage(): StorageReference =
         FirebaseStorage.getInstance().reference.child("profilePics")
 
-
     @Provides
     @Singleton
-    fun provideUserCollection(db: FirebaseFirestore): CollectionReference = db.collection("users")
+    fun provideUsersCollection(db: FirebaseFirestore): CollectionReference = db.collection("accounts")
 
-    @Singleton
-    @Provides
-    fun provideLoginRepository(authService: AuthService): AuthRepository =
-        AuthRepositoryImpl(authService)
 
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lilingxu.themoviedb.data.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,15 +58,15 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getMovies(
-        apiCall: suspend MovieRepository.() -> ResultAPI<List<Movie>>,
+        apiCall: suspend MovieRepository.() -> Resource<List<Movie>>,
         movieList: MutableLiveData<List<Movie>>,
     ) {
         viewModelScope.launch {
             when (val result = apiCall(repository)) {
-                is ResultAPI.Success -> {
+                is Resource.Success -> {
                     movieList.value = result.data ?: emptyList()
                 }
-                is ResultAPI.Error -> {
+                is Resource.Error -> {
                     //TODO mostar un dialog de error
                 }
                 else -> {}

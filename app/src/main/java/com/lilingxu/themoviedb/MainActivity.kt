@@ -1,5 +1,6 @@
 package com.lilingxu.themoviedb
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +11,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -34,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 val currentDestination = currentBackStack?.destination
                 //topBar
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+                val context = LocalContext.current
 
                 Scaffold(
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -56,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    Navigation(navController, Modifier.padding(it))
+                    Navigation(context, navController, Modifier.padding(it))
 
                 }
             }

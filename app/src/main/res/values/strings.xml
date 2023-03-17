@@ -5,7 +5,7 @@
     <string name="register">REGISTER</string>
     <string name="email">Email</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="invalid_email">Email invalid*</string>
+    <string name="invalid_email">Invalid email*</string>
     <string name="passwords_do_not_match">Passwords do not match*</string>
     <string name="password">Password</string>
     <string name="repeat_password">Repeat password</string>
@@ -19,4 +19,5 @@
     <string name="next">Next</string>
     <string name="create_a_username">Create a username</string>
     <string name="create_a_username_text">Add a username. You can change it at any time.</string>
+    <string name="confirm">Confirm</string>
 </resources>

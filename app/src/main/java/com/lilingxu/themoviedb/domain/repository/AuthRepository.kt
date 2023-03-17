@@ -1,14 +1,32 @@
 package com.lilingxu.themoviedb.domain.repository
 
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.AuthResult
-import com.lilingxu.themoviedb.data.ResultAPI
+import com.lilingxu.themoviedb.data.networkResult.Resource
+import com.lilingxu.themoviedb.domain.model.Account
 
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-    fun loginWithCredential(credential: AuthCredential): Flow<ResultAPI<AuthResult>>
+    /* fun loginWithCredential(credential: AuthCredential): Flow<ResultAPI<AuthResult>>
 
-    fun isValidUsername(username:String): Flow<ResultAPI<Boolean>>
+     fun createUserWithEmailPassword(email: String, password: String): Flow<ResultAPI<Boolean>>
+
+     fun isUsernameExist(username: String): Flow<ResultAPI<Boolean>>
+
+     fun isEmailRegistered(email: String): Flow<ResultAPI<Boolean>>*/
+    fun loginWithUsernamePassword(username: String, password: String): Flow<Resource<Boolean>>
+
+    suspend fun getAccountSessionId(username: String): Resource<String>
+
+    suspend fun registerWithTMDB(): Resource<String>
+
+    suspend fun createSession(requestToken: String): Resource<String>
+
+    suspend fun saveNewAccount(newAccount: Account): Resource<Boolean>
+
+    suspend fun getAccountDetails(sessionId: String): Resource<Account>
+
+    suspend fun deleteSession(sessionId: String): Resource<Boolean>
+
+
 }
