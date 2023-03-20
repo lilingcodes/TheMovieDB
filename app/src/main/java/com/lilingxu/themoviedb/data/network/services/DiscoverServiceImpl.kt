@@ -20,7 +20,7 @@ class DiscoverServiceImpl @Inject constructor(
             name = "getMoviesByGenre",
             apiResponse = { discoverApi.getMoviesByGenre(token, genreId, page) },
             onSuccess = { movieResponseDto ->
-                movieResponseDto.results.map { it.toDomain() }
+                movieResponseDto.results?.map { it.toDomain() } ?: emptyList()
             }
         )
     }

@@ -3,8 +3,11 @@ package com.lilingxu.themoviedb.domain.repository
 import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.domain.model.Genre
 import com.lilingxu.themoviedb.domain.model.Movie
+import com.lilingxu.themoviedb.domain.model.MovieDetails
 
 interface MovieRepository {
+
+    suspend fun getMovieDetails(movieId: Int): Resource<MovieDetails>
 
     suspend fun getPopularMovies(): Resource<List<Movie>>
 

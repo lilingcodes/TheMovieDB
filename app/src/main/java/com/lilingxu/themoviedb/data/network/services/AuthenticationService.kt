@@ -1,6 +1,6 @@
 package com.lilingxu.themoviedb.data.network.services
 
-import com.lilingxu.themoviedb.data.model.LoginModel
+import com.lilingxu.themoviedb.data.model.LoginBodyModel
 import com.lilingxu.themoviedb.data.networkResult.Resource
 
 interface AuthenticationService {
@@ -9,7 +9,7 @@ interface AuthenticationService {
 
     suspend fun createSession(requestToken: String): Resource<String>
 
-    suspend fun createSessionWithLogin(body: LoginModel): Resource<String>
+    suspend fun createSessionWithLogin(body: LoginBodyModel): Resource<String>
 
     suspend fun deleteSession(sessionId: String): Resource<Boolean>
 

@@ -39,6 +39,7 @@ class HomeViewModel @Inject constructor(
         getUpcomingMovies()
         getTopRatedMovies()
         _isLoading.value = false
+        //TODO SHIMMER
     }
 
     private fun getPopularMovies() {

@@ -7,14 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lilingxu.themoviedb.domain.model.Movie
+import com.lilingxu.themoviedb.ui.components.SimpleTopBar
 import com.lilingxu.themoviedb.ui.viewmodel.GenreViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
@@ -30,7 +29,7 @@ fun GenreScreen(
     setSheetContent: (Movie) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GenreViewModel = hiltViewModel(),
-    ) {
+) {
 
     val movieList: List<Movie> by viewModel.movieList.observeAsState(emptyList())
     val isLoading by viewModel.isLoading.observeAsState(false)
@@ -50,24 +49,22 @@ fun GenreScreen(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    navigationIcon = {
-                        IconButton(onClick = arrowBackOnClick) {
-                            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
-                        }
-                    },
-                    title = {
-                        Text(genreName)
-                    }
-                )
+                SimpleTopBar(title = genreName) {
+                    arrowBackOnClick()
+                }
             }
         ) {
-            MovieGrid(movieList, listState, it, movieOnClick = { movie ->
-                setSheetContent(movie)
-                scope.launch {
-                    sheetState.show()
+            MovieGrid(
+                movieList = movieList,
+                listState = listState,
+                paddingValues = it,
+                movieOnClick = { movie ->
+                    setSheetContent(movie)
+                    scope.launch {
+                        sheetState.show()
+                    }
                 }
-            })
+            )
         }
     }
 
@@ -89,7 +86,7 @@ fun MovieGrid(
     listState: LazyGridState,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
-    movieOnClick: (Movie) -> Unit = {}
+    movieOnClick: (Movie) -> Unit = {},
 ) {
     LazyVerticalGrid(
         modifier = modifier.padding(paddingValues),
@@ -103,7 +100,7 @@ fun MovieGrid(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(movieList) {
-            MovieItem(it,movieOnClick)
+            MovieItem(it, movieOnClick)
         }
 
     }

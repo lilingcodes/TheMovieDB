@@ -1,7 +1,7 @@
 package com.lilingxu.themoviedb.data.network.services
 
 import com.google.gson.JsonObject
-import com.lilingxu.themoviedb.data.model.LoginModel
+import com.lilingxu.themoviedb.data.model.LoginBodyModel
 import com.lilingxu.themoviedb.data.network.ApiToken
 import com.lilingxu.themoviedb.data.network.apis.AuthenticationApi
 import com.lilingxu.themoviedb.data.network.getApiResource
@@ -38,7 +38,7 @@ class AuthenticationServiceImpl @Inject constructor(
         )
     }
 
-    override suspend fun createSessionWithLogin(body: LoginModel): Resource<String> {
+    override suspend fun createSessionWithLogin(body: LoginBodyModel): Resource<String> {
         return getApiResource(
             name = "createSessionWithLogin",
             apiResponse = { authenticationApi.createSessionWithLogin(token, body) },

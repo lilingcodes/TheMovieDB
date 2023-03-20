@@ -29,7 +29,11 @@ fun Navigation(
     val startDestination: String by mainViewModel.startDestination.observeAsState(WelcomeScreen.route)
     mainViewModel.updateStartDestination()
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = startDestination
+    ) {
 
         composable(WelcomeScreen.route) {
             WelcomeScreen(
@@ -40,7 +44,7 @@ fun Navigation(
                     navController.navigate(AuthRequestScreen.route)
 
                 },
-                modifier = modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp)
             )
         }
 
@@ -51,32 +55,36 @@ fun Navigation(
                     navController.navigateSingleTopTo(HomeScreen.route)
                     mainViewModel.updateStartDestination()
                 },
-                modifier = modifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp),
             )
         }
 
         composable(AuthRequestScreen.route) {
             AuthRequestScreen(
                 onSuccess = { navController.navigateSingleTopTo(LoginScreen.route) },
-                onFail = { navController.navigateSingleTopTo(WelcomeScreen.route) },
-                modifier = modifier.padding(16.dp),
+                onFail = { /*navController.navigateSingleTopTo(WelcomeScreen.route)*/ },
+                modifier = Modifier.padding(16.dp),
             )
         }
 
 
         composable(HomeScreen.route) {
             HomeScreen(
-                sheetContent = { BottomSheetContent(sheetMovie, modifier) },
+                sheetContent = {
+                    BottomSheetContent(sheetMovie) {
+                        navController.homeNavigateToMovieDetails(sheetMovie.id)
+                    }
+                },
                 setSheetContent = { movie ->
                     mainViewModel.setSheetMovie(movie)
                 },
-                modifier = modifier
+                modifier = Modifier
             )
         }
 
         composable(DiscoverScreen.route) {
             DiscoverScreen(
-                modifier = modifier,
+                modifier = Modifier,
                 searchFieldOnClick = {},
                 genreTypeOnClick = { id, name ->
                     navController.navigateToGenre(id, name)
@@ -89,39 +97,50 @@ fun Navigation(
             route = GenreScreen.routeWithArgs,
             arguments = GenreScreen.arguments
         ) {
-            val genreType = it.arguments?.getInt(GenreScreen.genreId)!!
+            val genreId = it.arguments?.getInt(GenreScreen.genreId)!!
             val genreName = it.arguments?.getString(GenreScreen.genreType)!!
             GenreScreen(
-                genreType,
+                genreId,
                 genreName,
                 arrowBackOnClick = { navController.popBackStack() },
-                sheetContent = { BottomSheetContent(sheetMovie, modifier) },
+                sheetContent = {
+                    BottomSheetContent(sheetMovie) {
+                        navController.genreNavigateToMovieDetails(sheetMovie.id)
+                    }
+                },
                 setSheetContent = { movie ->
                     mainViewModel.setSheetMovie(movie)
                 },
-                modifier
+                modifier = Modifier
             )
         }
 
         composable(FavoriteScreen.route) {
-            FavoriteScreen(modifier)
+            FavoriteScreen()
         }
 
         composable(ProfileScreen.route) {
-            ProfileScreen(modifier) {
+            ProfileScreen() {
                 navController.navigateSingleTopTo(WelcomeScreen.route)
                 mainViewModel.updateStartDestination()
 
             }
         }
+
+        composable(
+            route = MovieDetailsScreen.routeWithArgs,
+            arguments = MovieDetailsScreen.arguments
+        ) {
+            val movieId = it.arguments?.getInt(MovieDetailsScreen.movieId)!!
+
+            MovieDetailsScreen(
+                movieId = movieId,
+                arrowBackOnClick = { navController.popBackStack() }
+            )
+        }
     }
 
 }
-
-
-/*fun NavHostController.navigateToSingleAccount(accountType: String) {
-    this.navigateSingleTopTo("${SingleAccount.route}/${accountType}")
-}*/
 
 fun NavHostController.navigateSingleTopTo(
     route: String,
@@ -148,3 +167,23 @@ fun NavHostController.navigateToGenre(genreId: Int, genreName: String) =
         }
 
     }
+
+fun NavHostController.homeNavigateToMovieDetails(movieId: Int) =
+    this.navigate("${MovieDetailsScreen.route}/${movieId}") {
+        popUpTo(
+            HomeScreen.route
+        ) {
+            saveState = true
+        }
+
+    }
+fun NavHostController.genreNavigateToMovieDetails(movieId: Int) =
+    this.navigate("${MovieDetailsScreen.route}/${movieId}") {
+        popUpTo(
+            GenreScreen.route
+        ) {
+            saveState = true
+        }
+
+    }
+

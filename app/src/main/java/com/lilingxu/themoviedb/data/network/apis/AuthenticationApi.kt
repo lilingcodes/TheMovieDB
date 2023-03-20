@@ -2,7 +2,7 @@ package com.lilingxu.themoviedb.data.network.apis
 
 import com.google.gson.JsonObject
 import com.lilingxu.themoviedb.data.model.authentication.DeleteDto
-import com.lilingxu.themoviedb.data.model.LoginModel
+import com.lilingxu.themoviedb.data.model.LoginBodyModel
 import com.lilingxu.themoviedb.data.model.authentication.SessionDto
 import com.lilingxu.themoviedb.data.model.authentication.TokenDto
 import retrofit2.Response
@@ -24,7 +24,7 @@ interface AuthenticationApi {
     @POST("authentication/token/validate_with_login")
     suspend fun createSessionWithLogin(
         @Query("api_key") token: String,
-        @Body body: LoginModel,
+        @Body body: LoginBodyModel,
     ): Response<TokenDto>
 
     //@DELETE("authentication/session")

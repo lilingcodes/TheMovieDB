@@ -1,22 +1,19 @@
 package com.lilingxu.themoviedb.domain.model
 
-import com.lilingxu.themoviedb.data.model.movie.MovieDto
+import com.lilingxu.themoviedb.data.model.movie.MovieDetailsResponseDto
 import java.util.*
 
-data class Movie(
-    val id: Int = 0,
-    val title: String = "",
-    val poster_path: String = "",
-    val backdrop_path: String = "",
-    val overview: String = "",
-    val release_date: Date = Date(),
-    val popularity: Double = 0.0,
-    val vote_count: Int = 0,
-    val vote_average: Double = 0.0,
+data class MovieDetails(
+    val movie: Movie = Movie(),
+    val genres: List<Genre> = emptyList(),
+    val runtime: Int = 0,
+    val status: String = "",
+    val tagline: String = "",
+
 )
 
-fun MovieDto.toDomain() =
-    Movie(
+fun MovieDetailsResponseDto.toDomain() = MovieDetails(
+    movie = Movie(
         id = id ?: 0,
         title = title.orEmpty(),
         poster_path = poster_path.orEmpty(),
@@ -26,5 +23,10 @@ fun MovieDto.toDomain() =
         popularity = popularity ?: 0.0,
         vote_count = vote_count ?: 0,
         vote_average = vote_average ?: 0.0,
-    )
+    ),
 
+    genres = genres.orEmpty(),
+    runtime = runtime ?: 0,
+    status = status.orEmpty(),
+    tagline = tagline.orEmpty(),
+)

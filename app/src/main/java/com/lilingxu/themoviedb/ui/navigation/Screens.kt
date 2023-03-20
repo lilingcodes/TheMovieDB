@@ -5,7 +5,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
 
 
 interface ScreenDestination {
@@ -13,9 +12,6 @@ interface ScreenDestination {
     val route: String
 }
 
-/**
- * TheMovieDB app navigation destinations
- */
 object WelcomeScreen : ScreenDestination {
     override val route = "welcome"
     override val icon = Icons.Filled.Home
@@ -60,15 +56,29 @@ object GenreScreen : ScreenDestination {
     override val icon = Icons.Filled.Search
     const val genreId = "genre_id"
     const val genreType = "genre_type"
-    val routeWithArgs = "$route/{$genreId}/{${genreType}}"
+    val routeWithArgs = "$route/{$genreId}/{$genreType}"
     val arguments = listOf(
-        navArgument(GenreScreen.genreId) {
+        navArgument(genreId) {
             type = NavType.IntType
         },
-        navArgument(GenreScreen.genreType) {
+        navArgument(genreType) {
             type = NavType.StringType
         }
     )
+}
+
+object MovieDetailsScreen : ScreenDestination {
+    override val route = "movieDetails"
+    override val icon = Icons.Filled.Warning
+    const val movieId = "movie_id"
+    val routeWithArgs = "$route/{$movieId}"
+    val arguments = listOf(
+        navArgument(movieId){
+            type = NavType.IntType
+        }
+    )
+
+
 }
 
 // Screens to be displayed in the botBar

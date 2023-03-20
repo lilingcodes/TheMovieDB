@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
-    sheetContent: @Composable() (ColumnScope.() -> Unit),
+    sheetContent: @Composable (ColumnScope.() -> Unit),
     setSheetContent: (Movie) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -41,6 +42,7 @@ fun HomeScreen(
 
 
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
     val homeDataList = listOf(
@@ -51,14 +53,17 @@ fun HomeScreen(
     )
 
     ModalBottomSheetLayout(
+        modifier = modifier,
         sheetShape = RoundedCornerShape(16.dp, 16.dp),
         sheetState = sheetState,
         sheetContent = {
             sheetContent()
         }
     ) {
+
         LazyColumn(
-            modifier = modifier,
+            modifier = Modifier,
+            state = listState
         ) {
             item {
                 MySpacer()
@@ -79,8 +84,8 @@ fun HomeScreen(
             }
 
         }
-    }
 
+    }
 }
 
 @Composable

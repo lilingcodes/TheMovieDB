@@ -1,6 +1,6 @@
 package com.lilingxu.themoviedb.data.repository
 
-import com.lilingxu.themoviedb.data.model.LoginModel
+import com.lilingxu.themoviedb.data.model.LoginBodyModel
 import com.lilingxu.themoviedb.data.network.firebase.AccountDAO
 import com.lilingxu.themoviedb.data.network.performFlowTemplate
 import com.lilingxu.themoviedb.data.network.services.AccountService
@@ -23,7 +23,7 @@ class AuthRepositoryImpl @Inject constructor(
         return performFlowTemplate {
             val tokenResult = authService.createRequestToken()
             if (tokenResult is Resource.Success) {
-                val requestBody = LoginModel(username, password, tokenResult.data!!)
+                val requestBody = LoginBodyModel(username, password, tokenResult.data!!)
 
                 val sessionResult = authService.createSessionWithLogin(requestBody)
                 if (sessionResult is Resource.Success) {

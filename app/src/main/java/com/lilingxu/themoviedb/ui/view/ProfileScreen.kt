@@ -1,5 +1,6 @@
 package com.lilingxu.themoviedb.ui.view
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,11 +12,13 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     signOutOnPress: () -> Unit,
 ) {
-
-    Button(onClick = {
-        sharedPref.clear()
-        signOutOnPress()
-    }) {
-        Text(text = "Sign out")
+    Column() {
+        Text(text = "${sharedPref.getSessionId()}")
+        Button(onClick = {
+            sharedPref.clear()
+            signOutOnPress()
+        }) {
+            Text(text = "Sign out")
+        }
     }
 }

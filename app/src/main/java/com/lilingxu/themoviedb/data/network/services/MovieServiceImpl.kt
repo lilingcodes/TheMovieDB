@@ -5,6 +5,7 @@ import com.lilingxu.themoviedb.data.network.apis.MoviesApi
 import com.lilingxu.themoviedb.data.network.getApiResource
 import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.domain.model.Movie
+import com.lilingxu.themoviedb.domain.model.MovieDetails
 import com.lilingxu.themoviedb.domain.model.toDomain
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,12 +16,22 @@ class MovieServiceImpl @Inject constructor(
     private val moviesApi: MoviesApi,
 ) : MovieService {
 
+    override suspend fun getMovieDetails(movieId: Int): Resource<MovieDetails> {
+        return getApiResource(
+            name = "getMovieDetails",
+            apiResponse = { moviesApi.getMovieDetails(movieId, token) },
+            onSuccess = { movieDetailsResponseDto ->
+                movieDetailsResponseDto.toDomain()
+            }
+        )
+    }
+
     override suspend fun getPopular(): Resource<List<Movie>> {
         return getApiResource(
             name = "getPopular",
             apiResponse = { moviesApi.getPopular(token) },
             onSuccess = { movieResponseDto ->
-                movieResponseDto.results.map { it.toDomain() }
+                movieResponseDto.results?.map { it.toDomain() } ?: emptyList()
             }
         )
     }
@@ -30,7 +41,7 @@ class MovieServiceImpl @Inject constructor(
             name = "getNowPlaying",
             apiResponse = { moviesApi.getNowPlaying(token) },
             onSuccess = { movieResponseDto ->
-                movieResponseDto.results.map { it.toDomain() }
+                movieResponseDto.results?.map { it.toDomain() } ?: emptyList()
             }
         )
     }
@@ -40,7 +51,7 @@ class MovieServiceImpl @Inject constructor(
             name = "getUpcoming",
             apiResponse = { moviesApi.getUpcoming(token) },
             onSuccess = { movieResponseDto ->
-                movieResponseDto.results.map { it.toDomain() }
+                movieResponseDto.results?.map { it.toDomain() } ?: emptyList()
             }
         )
     }
@@ -50,7 +61,7 @@ class MovieServiceImpl @Inject constructor(
             name = "getTopRated",
             apiResponse = { moviesApi.getTopRated(token) },
             onSuccess = { movieResponseDto ->
-                movieResponseDto.results.map { it.toDomain() }
+                movieResponseDto.results?.map { it.toDomain() } ?: emptyList()
             }
         )
     }

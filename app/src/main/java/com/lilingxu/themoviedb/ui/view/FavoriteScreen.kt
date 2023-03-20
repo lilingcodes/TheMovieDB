@@ -3,6 +3,7 @@ package com.lilingxu.themoviedb.ui.view
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.lilingxu.themoviedb.ui.components.MySpacer
@@ -26,6 +27,19 @@ fun FavoriteScreen(modifier: Modifier = Modifier) {
             Text(text = "body1 $a", style = MaterialTheme.typography.body1)
             Text(text = "body2 $a", style = MaterialTheme.typography.body2)
             Text(text = "overline $a", style = MaterialTheme.typography.overline)
+
+            Text(text = "primary", color = MaterialTheme.colors.primary)
+            Text(text = "onPrimary", color = MaterialTheme.colors.onPrimary)
+            Text(text = "primaryVariant", color = MaterialTheme.colors.primaryVariant)
+            Text(text = "secondary", color = MaterialTheme.colors.secondary)
+            Text(text = "onSecondary", color = MaterialTheme.colors.onSecondary)
+            Text(text = "secondaryVariant", color = MaterialTheme.colors.secondaryVariant)
+            Text(text = "surface", color = MaterialTheme.colors.surface)
+            Text(text = "onSurface", color = MaterialTheme.colors.onSurface)
+            Text(text = "primarySurface", color = MaterialTheme.colors.primarySurface)
+            Text(text = "background", color = MaterialTheme.colors.background)
+            Text(text = "onBackground", color = MaterialTheme.colors.onBackground)
+            Text(text = "onError", color = MaterialTheme.colors.onError)
 
 
             MySpacer()

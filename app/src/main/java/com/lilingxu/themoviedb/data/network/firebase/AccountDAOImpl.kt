@@ -29,10 +29,10 @@ class AccountDAOImpl @Inject constructor(
                     val oldSessionId = querySnapshot.getString("sessionId")
                     Log.e("PRUEBAS1", "ya existe en DB borro antiguo session: $oldSessionId")
                     val dataToUpdate = HashMap<String, Any>()
-                    if (!newAccount.sessionId.isNullOrEmpty())
-                        dataToUpdate["sessionId"] = newAccount.sessionId!!
-                    if (!newAccount.avatar_path.isNullOrEmpty())
-                        dataToUpdate["avatar_path"] = newAccount.avatar_path!!
+                    if (newAccount.sessionId.isNotEmpty())
+                        dataToUpdate["sessionId"] = newAccount.sessionId
+                    if (newAccount.avatar_path.isNotEmpty())
+                        dataToUpdate["avatar_path"] = newAccount.avatar_path
                     querySnapshot.reference.update(dataToUpdate)
                     onExist(oldSessionId.toString())
                 } else {

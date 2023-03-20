@@ -1,20 +1,18 @@
 package com.lilingxu.themoviedb.data.model.movie
 
-import com.google.gson.annotations.SerializedName
-
 data class MovieDto(
-    @SerializedName("adult") val adult: Boolean,
-    @SerializedName("backdrop_path") val backdrop_path: String,
-    @SerializedName("genre_ids") val genre_ids: List<Int>,
-    @SerializedName("id") val id: Int,
-    @SerializedName("original_language") val original_language: String,
-    @SerializedName("original_title") val original_title: String,
-    @SerializedName("overview") val overview: String,
-    @SerializedName("popularity") val popularity: Double,
-    @SerializedName("poster_path") val poster_path: String,
-    @SerializedName("release_date") val release_date: String,
-    @SerializedName("title") val title: String,
-    @SerializedName("video") val video: Boolean,
-    @SerializedName("vote_average") val vote_average: Double,
-    @SerializedName("vote_count") val vote_count: Int
+    val adult: Boolean? = null,
+    val backdrop_path: String? = null,
+    val genre_ids: List<Int>? = null,
+    val id: Int? = null,
+    val original_language: String? = null,
+    val original_title: String? = null,
+    val overview: String? = null,
+    val popularity: Double? = null,
+    val poster_path: String? = null,
+    val release_date: String? = null,
+    val title: String? = null,
+    val video: Boolean? = null,
+    val vote_average: Double? = null,
+    val vote_count: Int? = null,
 )
