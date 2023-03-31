@@ -34,7 +34,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    //val isLoading: Boolean by viewModel.isLoading.observeAsState(false)
+    val isLoading: Boolean by viewModel.isLoading.observeAsState(true)
     val popularList: List<Movie> by viewModel.popularMovies.observeAsState(emptyList())
     val nowPlayingList: List<Movie> by viewModel.nowPlayingMovies.observeAsState(emptyList())
     val upcomingList: List<Movie> by viewModel.upcomingMovies.observeAsState(emptyList())
@@ -60,32 +60,36 @@ fun HomeScreen(
             sheetContent()
         }
     ) {
+        if (isLoading) {
+            CircularProgressIndicator()
+        } else {
 
-        LazyColumn(
-            modifier = Modifier,
-            state = listState
-        ) {
-            item {
-                MySpacer()
-            }
-
-            items(homeDataList) { homeData ->
-                HomeSection(
-                    title = stringResource(id = homeData.title),
-                    moviesList = homeData.movieList,
-                    onClick = { movie ->
-                        setSheetContent(movie)
-                        scope.launch {
-                            sheetState.show()
+            LazyColumn(
+                modifier = Modifier,
+                state = listState
+            ) {
+                item {
+                    MySpacer()
+                }
+                items(homeDataList) { homeData ->
+                    HomeSection(
+                        title = stringResource(id = homeData.title),
+                        moviesList = homeData.movieList,
+                        onClick = { movie ->
+                            setSheetContent(movie)
+                            scope.launch {
+                                sheetState.show()
+                            }
                         }
-                    }
-                )
-                MySpacer()
-            }
+                    )
+                    MySpacer()
+                }
 
+            }
         }
 
     }
+
 }
 
 @Composable

@@ -16,7 +16,7 @@ class HomeViewModel @Inject constructor(
     private val repository: MovieRepository,
 ) : ViewModel() {
 
-    private val _isLoading = MutableLiveData(false)
+    private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _popularMovies = MutableLiveData<List<Movie>>(emptyList())
@@ -63,14 +63,9 @@ class HomeViewModel @Inject constructor(
         movieList: MutableLiveData<List<Movie>>,
     ) {
         viewModelScope.launch {
-            when (val result = apiCall(repository)) {
-                is Resource.Success -> {
-                    movieList.value = result.data ?: emptyList()
-                }
-                is Resource.Error -> {
-                    //TODO mostar un dialog de error
-                }
-                else -> {}
+            if( apiCall(repository) is Resource.Success){
+                val result = apiCall(repository)
+                movieList.value = result.data ?: emptyList()
             }
         }
     }

@@ -1,6 +1,6 @@
-package com.lilingxu.themoviedb.data.model
+package com.lilingxu.themoviedb.data.model.movie.details
 
-data class BelongsToCollection(
+data class BelongsToCollectionDto(
     val backdrop_path: String? = null,
     val id: Int? = null,
     val name: String? = null,

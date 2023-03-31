@@ -17,9 +17,11 @@ class MovieServiceImpl @Inject constructor(
 ) : MovieService {
 
     override suspend fun getMovieDetails(movieId: Int): Resource<MovieDetails> {
+        val appendToResponse =
+            "account_states,external_ids,credits,recommendations,similar,videos"
         return getApiResource(
             name = "getMovieDetails",
-            apiResponse = { moviesApi.getMovieDetails(movieId, token) },
+            apiResponse = { moviesApi.getMovieDetails(movieId, token, appendToResponse) },
             onSuccess = { movieDetailsResponseDto ->
                 movieDetailsResponseDto.toDomain()
             }

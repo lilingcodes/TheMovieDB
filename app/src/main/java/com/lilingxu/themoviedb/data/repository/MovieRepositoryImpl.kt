@@ -2,8 +2,8 @@ package com.lilingxu.themoviedb.data.repository
 
 import com.lilingxu.themoviedb.data.network.services.DiscoverService
 import com.lilingxu.themoviedb.data.network.services.GenresService
-import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.data.network.services.MovieService
+import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.domain.model.Genre
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.domain.model.MovieDetails
@@ -15,7 +15,6 @@ class MovieRepositoryImpl @Inject constructor(
     private val discoverService: DiscoverService,
     private val genresService: GenresService,
 ) : MovieRepository {
-
     override suspend fun getMovieDetails(movieId: Int): Resource<MovieDetails> {
         return movieService.getMovieDetails(movieId)
     }

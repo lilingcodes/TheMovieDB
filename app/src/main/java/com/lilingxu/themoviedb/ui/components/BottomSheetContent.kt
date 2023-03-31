@@ -2,12 +2,10 @@ package com.lilingxu.themoviedb.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,7 +13,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.domain.model.dateText
-import com.lilingxu.themoviedb.ui.theme.DarkBlueLight
 
 @Composable
 fun BottomSheetContent(movie: Movie, modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -33,7 +30,7 @@ fun BottomSheetContent(movie: Movie, modifier: Modifier = Modifier, onClick: () 
                 modifier = Modifier.padding(vertical = 10.dp, horizontal = 5.dp),
                 color = Color.White
             )
-            MoviePreviewActions()
+            MovieStateActions()
 
         }
     }
@@ -46,7 +43,7 @@ fun MoviePreviewCard(movie: Movie, modifier: Modifier = Modifier, onClick: () ->
         modifier = modifier.clickable { onClick() },
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        MovieImage(movie.poster_path)
+        SimpleImage(movie.poster_path)
         MovieDescription(movie)
     }
 }
@@ -75,39 +72,4 @@ private fun MovieDescription(movie: Movie, modifier: Modifier = Modifier) {
         )
     }
 }
-
-
-@Composable
-fun MoviePreviewActions(modifier: Modifier = Modifier) {
-    val actions = listOf(
-        Icons.Default.List,
-        Icons.Default.Favorite,
-        Icons.Default.Add,
-        Icons.Default.Star,
-    )
-
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        for (item in actions) {
-            Card(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable {
-                    },
-                shape = MaterialTheme.shapes.large,
-                backgroundColor = DarkBlueLight
-            ) {
-                Icon(
-                    modifier = Modifier.padding(12.dp),
-                    imageVector = item,
-                    contentDescription = null
-                )
-            }
-        }
-    }
-}
-
-
 
