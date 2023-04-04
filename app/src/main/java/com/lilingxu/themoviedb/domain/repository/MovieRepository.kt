@@ -2,10 +2,13 @@ package com.lilingxu.themoviedb.domain.repository
 
 import com.lilingxu.themoviedb.data.networkResult.Resource
 import com.lilingxu.themoviedb.domain.model.Genre
+import com.lilingxu.themoviedb.domain.model.HomeData
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.domain.model.MovieDetails
+import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
+    suspend fun getHomeData(): Flow<Resource<MutableList<HomeData>>>
 
     suspend fun getMovieDetails(movieId: Int): Resource<MovieDetails>
 

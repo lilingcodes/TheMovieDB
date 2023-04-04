@@ -12,17 +12,18 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.lilingxu.themoviedb.R
 import com.lilingxu.themoviedb.domain.model.HomeData
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.ui.components.MySpacer
 import com.lilingxu.themoviedb.ui.theme.Grey
+import com.lilingxu.themoviedb.ui.view.shimmer.HomeShimmer
 import com.lilingxu.themoviedb.ui.viewmodel.HomeViewModel
 import com.lilingxu.themoviedb.utils.IMAGE_BASE_URL
+import com.lilingxu.themoviedb.utils.IMAGE_HEIGHT_MEDIUM
+import com.lilingxu.themoviedb.utils.IMAGE_WIDTH_MEDIUM
 import kotlinx.coroutines.launch
 
 
@@ -35,22 +36,13 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val isLoading: Boolean by viewModel.isLoading.observeAsState(true)
-    val popularList: List<Movie> by viewModel.popularMovies.observeAsState(emptyList())
-    val nowPlayingList: List<Movie> by viewModel.nowPlayingMovies.observeAsState(emptyList())
-    val upcomingList: List<Movie> by viewModel.upcomingMovies.observeAsState(emptyList())
-    val topRatedList: List<Movie> by viewModel.topRatedMovies.observeAsState(emptyList())
+    val homeDataList: List<HomeData> by viewModel.homeDataList.observeAsState(emptyList())
 
 
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
-    val homeDataList = listOf(
-        HomeData(R.string.popular, popularList),
-        HomeData(R.string.now_playing, nowPlayingList),
-        HomeData(R.string.upcoming, upcomingList),
-        HomeData(R.string.top_rated, topRatedList)
-    )
 
     ModalBottomSheetLayout(
         modifier = modifier,
@@ -61,19 +53,17 @@ fun HomeScreen(
         }
     ) {
         if (isLoading) {
-            CircularProgressIndicator()
+            HomeShimmer()
         } else {
-
             LazyColumn(
                 modifier = Modifier,
                 state = listState
             ) {
-                item {
-                    MySpacer()
-                }
+
                 items(homeDataList) { homeData ->
+                    MySpacer()
                     HomeSection(
-                        title = stringResource(id = homeData.title),
+                        title = homeData.title,
                         moviesList = homeData.movieList,
                         onClick = { movie ->
                             setSheetContent(movie)
@@ -82,6 +72,9 @@ fun HomeScreen(
                             }
                         }
                     )
+
+                }
+                item{
                     MySpacer()
                 }
 
@@ -126,8 +119,8 @@ fun MovieItem(
 ) {
     Card(
         modifier = Modifier
-            .height(210.dp)
-            .width(140.dp),
+            .height(IMAGE_HEIGHT_MEDIUM)
+            .width(IMAGE_WIDTH_MEDIUM),
         backgroundColor = Grey,
         shape = MaterialTheme.shapes.medium,
         elevation = 10.dp

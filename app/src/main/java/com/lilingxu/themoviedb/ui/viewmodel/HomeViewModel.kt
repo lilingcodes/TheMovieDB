@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lilingxu.themoviedb.data.networkResult.Resource
-import com.lilingxu.themoviedb.domain.model.Movie
+import com.lilingxu.themoviedb.domain.model.HomeData
 import com.lilingxu.themoviedb.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,53 +19,34 @@ class HomeViewModel @Inject constructor(
     private val _isLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    private val _popularMovies = MutableLiveData<List<Movie>>(emptyList())
-    val popularMovies: MutableLiveData<List<Movie>> get() = _popularMovies
-
-    private val _nowPlayingMovies = MutableLiveData<List<Movie>>(emptyList())
-    val nowPlayingMovies: MutableLiveData<List<Movie>> get() = _nowPlayingMovies
-
-    private val _upcomingMovies = MutableLiveData<List<Movie>>(emptyList())
-    val upcomingMovies: MutableLiveData<List<Movie>> get() = _upcomingMovies
-
-    private val _topRatedMovies = MutableLiveData<List<Movie>>(emptyList())
-    val topRatedMovies: MutableLiveData<List<Movie>> get() = _topRatedMovies
+    private val _homeDataList = MutableLiveData<List<HomeData>>(emptyList())
+    val homeDataList: MutableLiveData<List<HomeData>> get() = _homeDataList
 
 
     init {
-        _isLoading.value = true
-        getPopularMovies()
-        getNowPlayingMovies()
-        getUpcomingMovies()
-        getTopRatedMovies()
-        _isLoading.value = false
-        //TODO SHIMMER
+        getAllMovies()
+
     }
 
-    private fun getPopularMovies() {
-        getMovies(MovieRepository::getPopularMovies, _popularMovies)
-    }
+    private fun getAllMovies() {
+       viewModelScope.launch {
 
-    private fun getNowPlayingMovies() {
-        getMovies(MovieRepository::getNowPlayingMovies, _nowPlayingMovies)
-    }
+            repository.getHomeData().collect {
+                when (it) {
+                    is Resource.Loading -> {
+                        _isLoading.value = true
+                    }
 
-    private fun getUpcomingMovies() {
-        getMovies(MovieRepository::getUpcomingMovies, _upcomingMovies)
-    }
+                    is Resource.Success -> {
+                        _homeDataList.value = it.data ?: emptyList()
+                        _isLoading.value = false
 
-    private fun getTopRatedMovies() {
-        getMovies(MovieRepository::getTopRatedMovies, _topRatedMovies)
-    }
+                    }
 
-    private fun getMovies(
-        apiCall: suspend MovieRepository.() -> Resource<List<Movie>>,
-        movieList: MutableLiveData<List<Movie>>,
-    ) {
-        viewModelScope.launch {
-            if( apiCall(repository) is Resource.Success){
-                val result = apiCall(repository)
-                movieList.value = result.data ?: emptyList()
+                    is Resource.Error -> {
+                        _isLoading.value = false
+                    }
+                }
             }
         }
     }

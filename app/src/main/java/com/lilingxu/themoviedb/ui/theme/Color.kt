@@ -11,6 +11,7 @@ val Grey = Color(0xFFAFAFAF)
 
 val Green500 = Color(0xFF5CC3B9)
 val DarkBlueLight = Color(0xFF2C2F36)
+val ShimmerColor = Color(0xFF353841)
 val DarkBlue900 = Color(0xFF26282F)
 val DarkBlue950 = Color(0xFF000a12)
 
