@@ -8,18 +8,24 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lilingxu.themoviedb.domain.model.Genre
+import com.lilingxu.themoviedb.ui.components.SearchTopBar
 import com.lilingxu.themoviedb.ui.theme.DarkBlue900
 import com.lilingxu.themoviedb.ui.viewmodel.DiscoverViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiscoverScreen(
     searchFieldOnClick: () -> Unit,
@@ -31,15 +37,25 @@ fun DiscoverScreen(
 
     val lazyListState = rememberLazyListState()
 
-    LazyColumn(
-        modifier = modifier,
-        state = lazyListState,
-        verticalArrangement = Arrangement.Center
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+           SearchTopBar(scrollBehavior)
+        },
     ) {
-        items(genres) {
-            GenreItem(name = it.name) {
-                genreTypeOnClick(it.id, it.name)
-                searchFieldOnClick()
+
+        LazyColumn(
+            modifier = modifier.padding(it),
+            state = lazyListState,
+            verticalArrangement = Arrangement.Center
+        ) {
+            items(genres) {
+                GenreItem(name = it.name) {
+                    genreTypeOnClick(it.id, it.name)
+                    searchFieldOnClick()
+                }
             }
         }
     }
