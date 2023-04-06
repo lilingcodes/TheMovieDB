@@ -1,9 +1,6 @@
 package com.lilingxu.themoviedb.ui.view
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -15,6 +12,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lilingxu.themoviedb.domain.model.Movie
 import com.lilingxu.themoviedb.ui.components.SimpleTopBar
 import com.lilingxu.themoviedb.ui.viewmodel.GenreViewModel
+import com.lilingxu.themoviedb.utils.IMAGE_HEIGHT_LARGE
+import com.lilingxu.themoviedb.utils.IMAGE_WIDTH_LARGE
+import com.lilingxu.themoviedb.utils.IMAGE_WIDTH_MEDIUM
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
@@ -90,7 +90,7 @@ fun MovieGrid(
 ) {
     LazyVerticalGrid(
         modifier = modifier.padding(paddingValues),
-        columns = GridCells.Adaptive(140.dp),
+        columns = GridCells.Adaptive(IMAGE_WIDTH_MEDIUM),
         contentPadding = PaddingValues(
             vertical = 16.dp,
             horizontal = 12.dp,
@@ -100,7 +100,13 @@ fun MovieGrid(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(movieList) {
-            MovieItem(it, movieOnClick)
+            MovieItem(
+                it,
+                movieOnClick,
+                modifier
+                    .height(IMAGE_HEIGHT_LARGE)
+                    .width(IMAGE_WIDTH_LARGE)
+            )
         }
 
     }

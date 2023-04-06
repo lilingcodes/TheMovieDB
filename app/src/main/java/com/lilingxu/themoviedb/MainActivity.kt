@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
 
                 Scaffold(
+                    drawerElevation = 10.dp,
                     bottomBar = {
                         if (shouldShowBottomBar(navController)) {
                             val currentScreen = allScreens.find {

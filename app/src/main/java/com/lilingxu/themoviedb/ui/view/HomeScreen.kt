@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
-    sheetContent: @Composable (ColumnScope.() -> Unit),
+    sheetContent: @Composable (ColumnScope.(ModalBottomSheetState) -> Unit),
     setSheetContent: (Movie) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -49,7 +49,7 @@ fun HomeScreen(
         sheetShape = RoundedCornerShape(16.dp, 16.dp),
         sheetState = sheetState,
         sheetContent = {
-            sheetContent()
+            sheetContent(sheetState)
         }
     ) {
         if (isLoading) {
@@ -116,9 +116,10 @@ fun HomeSection(
 fun MovieItem(
     movie: Movie,
     movieOnClick: (Movie) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .height(IMAGE_HEIGHT_MEDIUM)
             .width(IMAGE_WIDTH_MEDIUM),
         backgroundColor = Grey,

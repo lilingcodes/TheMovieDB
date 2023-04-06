@@ -2,7 +2,9 @@ package com.lilingxu.themoviedb.ui.navigation
 
 import android.content.Context
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -17,6 +19,7 @@ import com.lilingxu.themoviedb.ui.components.BottomSheetContent
 import com.lilingxu.themoviedb.ui.view.*
 import com.lilingxu.themoviedb.ui.viewmodel.MainViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Navigation(
     context: Context,
@@ -27,7 +30,9 @@ fun Navigation(
 
     val sheetMovie: Movie by mainViewModel.sheetMovie.observeAsState(Movie())
     val startDestination: String by mainViewModel.startDestination.observeAsState(WelcomeScreen.route)
-    mainViewModel.updateStartDestination()
+    LaunchedEffect(true) {
+        mainViewModel.updateStartDestination()
+    }
 
     NavHost(
         modifier = modifier,
@@ -70,13 +75,16 @@ fun Navigation(
 
         composable(HomeScreen.route) {
             HomeScreen(
-                sheetContent = {
+                sheetContent = { sheetState ->
                     BottomSheetContent(sheetMovie) {
-                        navController.homeNavigateToMovieDetails(sheetMovie.id)
+                        if (sheetState.isVisible)
+                            navController.homeNavigateToMovieDetails(sheetMovie.id)
                     }
                 },
                 setSheetContent = { movie ->
-                    mainViewModel.setSheetMovie(movie)
+                    if (sheetMovie != movie) {
+                        mainViewModel.setSheetMovie(movie)
+                    }
                 },
                 modifier = Modifier
             )
@@ -109,7 +117,9 @@ fun Navigation(
                     }
                 },
                 setSheetContent = { movie ->
-                    mainViewModel.setSheetMovie(movie)
+                    if (sheetMovie != movie) {
+                        mainViewModel.setSheetMovie(movie)
+                    }
                 },
                 modifier = Modifier
             )
@@ -177,6 +187,7 @@ fun NavHostController.homeNavigateToMovieDetails(movieId: Int) =
         }
 
     }
+
 fun NavHostController.genreNavigateToMovieDetails(movieId: Int) =
     this.navigate("${MovieDetailsScreen.route}/${movieId}") {
         popUpTo(

@@ -60,6 +60,7 @@ fun ShimmerItem(brush: Brush) {
 
 @Composable
 fun HomeSectionShimmerItem(brush: Brush) {
+    //Title Shimmer
     Spacer(
         modifier = Modifier
             .padding(start = 16.dp)
@@ -69,6 +70,7 @@ fun HomeSectionShimmerItem(brush: Brush) {
             .background(brush),
     )
     Spacer(Modifier.height(8.dp))
+    //Images Shimmer
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         repeat(7) {
             Spacer(

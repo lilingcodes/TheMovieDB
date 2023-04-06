@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lilingxu.themoviedb.domain.model.*
 import com.lilingxu.themoviedb.ui.components.*
 import com.lilingxu.themoviedb.ui.theme.DarkBlueLight
+import com.lilingxu.themoviedb.ui.view.shimmer.MovieDetailsShimmer
 import com.lilingxu.themoviedb.ui.viewmodel.MovieDetailsViewModel
 
 @Composable
@@ -32,6 +33,7 @@ fun MovieDetailsScreen(
 ) {
 
     val movieDetails: MovieDetails by viewModel.movieDetails.collectAsState(MovieDetails())
+    val isLoading: Boolean by viewModel.isLoading.collectAsState()
 
     Scaffold(
         modifier = modifier,
@@ -41,31 +43,38 @@ fun MovieDetailsScreen(
             }
         }
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxWidth()
-        ) {
-            item {
-                MovieDetailsHeader(movieDetails = movieDetails, modifier = Modifier.padding(16.dp))
-                MySpacer()
+        if (isLoading) {
+            MovieDetailsShimmer()
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxWidth()
+            ) {
+                item {
+                    MovieDetailsHeader(
+                        movieDetails = movieDetails,
+                        modifier = Modifier.padding(vertical = 16.dp)
+                    )
+                    MySpacer()
 
-                DetailsSection("Overview") {
-                    MovieOverview(movieDetails)
+                    DetailsSection("Overview") {
+                        MovieOverview(movieDetails)
+                    }
+                    MySpacer()
+
+                    MovieStateActions(modifier = Modifier.padding(16.dp))
+                    MyDivider()
+
+                    DetailsSection("Cast") {
+                        MovieCastSection(movieDetails.casts)
+                    }
+                    MyDivider()
+
+                    DetailsSection("Keywords") { }
+                    MyDivider()
+
                 }
-                MySpacer()
-
-                MovieStateActions(modifier = Modifier.padding(16.dp))
-                MyDivider()
-
-                DetailsSection("Cast") {
-                    MovieCastSection(movieDetails.casts)
-                }
-                MyDivider()
-
-                DetailsSection("Keywords") { }
-                MyDivider()
-
             }
         }
     }
@@ -77,7 +86,7 @@ fun MovieDetailsScreen(
 
 @Composable
 fun MovieCastSection(list: List<Cast>, modifier: Modifier = Modifier) {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = modifier) {
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = modifier, contentPadding = PaddingValues(16.dp)) {
         items(list) {
             CastItem(it)
         }
@@ -85,7 +94,7 @@ fun MovieCastSection(list: List<Cast>, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun MyDivider() {
+fun MyDivider() {
     Divider(
         modifier = Modifier
             .padding(vertical = 10.dp),
@@ -130,11 +139,12 @@ fun DetailsSection(
     //viewMoreOnClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row {
             Text(
+                modifier = modifier.padding(horizontal = 16.dp),
                 text = title,
                 style = MaterialTheme.typography.subtitle2,
             )
@@ -156,11 +166,13 @@ fun MovieOverview(movieDetails: MovieDetails, modifier: Modifier = Modifier) {
 
     if (movieDetails.tagline.isNotEmpty()) {
         Text(
+            modifier= modifier.padding(horizontal = 16.dp),
             text = movieDetails.tagline,
             style = MaterialTheme.typography.body2.copy(fontStyle = FontStyle.Italic),
         )
     }
     Text(
+        modifier= modifier.padding(horizontal = 16.dp),
         text = movieDetails.movie.overview,
         style = MaterialTheme.typography.body2,
         overflow = TextOverflow.Ellipsis,
@@ -171,7 +183,10 @@ fun MovieOverview(movieDetails: MovieDetails, modifier: Modifier = Modifier) {
 @Composable
 fun MovieDetailsHeader(movieDetails: MovieDetails, modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
-        SimpleImage(posterPath = movieDetails.movie.poster_path, Modifier.padding(end = 8.dp))
+        SimpleImage(
+            posterPath = movieDetails.movie.poster_path,
+            Modifier.padding(start = 16.dp, end = 8.dp)
+        )
         MovieData(movieDetails = movieDetails)
     }
 }
@@ -196,7 +211,10 @@ private fun MovieData(movieDetails: MovieDetails, modifier: Modifier = Modifier)
             style = MaterialTheme.typography.overline,
         )
 
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(end = 8.dp)
+        ) {
             items(movieDetails.genres) {
                 GenreItem(it)
             }

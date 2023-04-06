@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getAllMovies() {
-       viewModelScope.launch {
+        viewModelScope.launch {
 
             repository.getHomeData().collect {
                 when (it) {

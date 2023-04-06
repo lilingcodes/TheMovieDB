@@ -13,13 +13,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.lilingxu.themoviedb.ui.theme.Grey
 import com.lilingxu.themoviedb.utils.IMAGE_BASE_URL
+import com.lilingxu.themoviedb.utils.IMAGE_HEIGHT_SMALL
+import com.lilingxu.themoviedb.utils.IMAGE_WIDTH_SMALL
 
 @Composable
 fun SimpleImage(posterPath: String, modifier: Modifier = Modifier, shape: Shape =MaterialTheme.shapes.medium) {
     Card(
         modifier = modifier
-            .height(140.dp)
-            .width(96.dp),
+            .height(IMAGE_HEIGHT_SMALL)
+            .width(IMAGE_WIDTH_SMALL),
         backgroundColor = Grey,
         shape = shape,
         elevation = 10.dp

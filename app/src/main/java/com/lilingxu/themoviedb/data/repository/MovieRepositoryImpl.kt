@@ -14,10 +14,11 @@ import com.lilingxu.themoviedb.domain.model.MovieDetails
 import com.lilingxu.themoviedb.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-enum class HomeSectionName(private val nameResId: Int){
+
+enum class HomeSectionName(private val nameResId: Int) {
     POPULAR(R.string.popular),
     UPCOMING(R.string.upcoming),
-    NOW_PLAYING(R.string.upcoming),
+    NOW_PLAYING(R.string.now_playing),
     TOP_RATED(R.string.top_rated);
 
     fun getName(context: Context): String {
@@ -25,11 +26,12 @@ enum class HomeSectionName(private val nameResId: Int){
     }
 
 }
+
 class MovieRepositoryImpl @Inject constructor(
     private val movieService: MovieService,
     private val discoverService: DiscoverService,
     private val genresService: GenresService,
-    private val context: Context
+    private val context: Context,
 ) : MovieRepository {
     override suspend fun getMovieDetails(movieId: Int): Resource<MovieDetails> {
         return movieService.getMovieDetails(movieId)
@@ -48,24 +50,25 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun MutableList<HomeData>.addApiResource(homeSectionName: HomeSectionName){
-        val apiResult: Resource<List<Movie>> = when(homeSectionName){
-            HomeSectionName.POPULAR ->{
-                movieService.getPopular()
+    private suspend fun MutableList<HomeData>.addApiResource(homeSectionName: HomeSectionName) {
+        val apiResult: Resource<List<Movie>> =
+            when (homeSectionName) {
+                HomeSectionName.POPULAR -> {
+                    movieService.getPopular()
+                }
+                HomeSectionName.UPCOMING -> {
+                    movieService.getUpcoming()
+                }
+                HomeSectionName.NOW_PLAYING -> {
+                    movieService.getNowPlaying()
+                }
+                HomeSectionName.TOP_RATED -> {
+                    movieService.getTopRated()
+                }
             }
-            HomeSectionName.UPCOMING ->{
-                movieService.getUpcoming()
-            }
-            HomeSectionName.NOW_PLAYING ->{
-                movieService.getNowPlaying()
-            }
-            HomeSectionName.TOP_RATED ->{
-                movieService.getTopRated()
-            }
-        }
 
         if (apiResult is Resource.Success) {
-            this.add(HomeData( apiResult.data ?: emptyList(), homeSectionName.getName(context)))
+            this.add(HomeData(apiResult.data ?: emptyList(), homeSectionName.getName(context)))
         }
     }
 

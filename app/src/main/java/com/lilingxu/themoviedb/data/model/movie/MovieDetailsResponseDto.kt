@@ -19,8 +19,8 @@ data class MovieDetailsResponseDto(
     val runtime: Int? = null,
     val genres: List<Genre>? = null,
     val tagline: String? = null,
-    val budget: Int? = null,
-    val revenue: Int? = null,
+    val budget: Long? = null,
+    val revenue: Long? = null,
     val homepage: String? = null,
 
     val production_companies: List<ProductionCompanyDto>? = null,

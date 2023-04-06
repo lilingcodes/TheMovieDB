@@ -10,8 +10,8 @@ data class MovieDetails(
     val runtime: Int = 0,
     val genres: List<Genre> = emptyList(),
     val tagline: String = "",
-    val budget: Int = 0,
-    val revenue: Int = 0,
+    val budget: Long = 0,
+    val revenue: Long = 0,
     val homepage: String = "",
 
     val production_companies: List<ProductionCompany> = emptyList(),

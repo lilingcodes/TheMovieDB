@@ -1,9 +1,9 @@
 package com.lilingxu.themoviedb.di
 
 import com.google.gson.GsonBuilder
+import com.lilingxu.themoviedb.BuildConfig
 import com.lilingxu.themoviedb.data.network.*
 import com.lilingxu.themoviedb.data.network.apis.*
-import com.lilingxu.themoviedb.utils.AUTH_TOKEN
 import com.lilingxu.themoviedb.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -21,7 +21,7 @@ object NetworkModule {
     @Provides
     @ApiToken
     fun provideAuthToken(): String {
-        return AUTH_TOKEN
+        return BuildConfig.AUTH_TOKEN
     }
 
     @Singleton

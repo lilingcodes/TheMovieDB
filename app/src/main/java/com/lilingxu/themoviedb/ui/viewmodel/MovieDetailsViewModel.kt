@@ -19,14 +19,17 @@ class MovieDetailsViewModel @Inject constructor(
     private val _movieDetails = MutableStateFlow(MovieDetails())
     val movieDetails: StateFlow<MovieDetails> get() = _movieDetails
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> get() = _isLoading
 
     fun getMovieDetails(id: Int) {
         viewModelScope.launch {
             if (movieRepository.getMovieDetails(id) is Resource.Success){
                 val result = movieRepository.getMovieDetails(id)
                 _movieDetails.value = result.data!!
+                _isLoading.value = false
             }else{
-
+                _isLoading.value = true
             }
         }
     }
