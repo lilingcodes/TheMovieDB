@@ -50,7 +50,7 @@ fun HomeShimmer() {
 @Composable
 fun ShimmerItem(brush: Brush) {
     Column{
-        repeat(3) {
+        repeat(4) {
             MySpacer()
             HomeSectionShimmerItem(brush = brush)
         }

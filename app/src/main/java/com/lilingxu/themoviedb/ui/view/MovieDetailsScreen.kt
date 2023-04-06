@@ -1,6 +1,7 @@
 package com.lilingxu.themoviedb.ui.view
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +25,7 @@ import com.lilingxu.themoviedb.ui.theme.DarkBlueLight
 import com.lilingxu.themoviedb.ui.view.shimmer.MovieDetailsShimmer
 import com.lilingxu.themoviedb.ui.viewmodel.MovieDetailsViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieDetailsScreen(
     movieId: Int,
@@ -135,7 +137,7 @@ fun DetailsSection(
     title: String,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
-    // viewMore: Boolean = false,
+    //viewMore: Boolean = false,
     //viewMoreOnClick: () -> Unit = {},
 ) {
     Column(

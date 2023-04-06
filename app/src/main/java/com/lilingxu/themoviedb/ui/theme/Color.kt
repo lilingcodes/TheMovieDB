@@ -10,6 +10,7 @@ val Teal200 = Color(0xFF03DAC5)
 val Grey = Color(0xFFAFAFAF)
 
 val Green500 = Color(0xFF5CC3B9)
+val Green700 = Color(0xFF38968D)
 val DarkBlueLight = Color(0xFF2C2F36)
 val ShimmerColor = Color(0xFF353841)
 val DarkBlue900 = Color(0xFF26282F)
@@ -18,6 +19,7 @@ val DarkBlue950 = Color(0xFF000a12)
 // Rally is always dark themed.
 val ColorPalette = darkColors(
     primary = Green500,
+    primaryVariant = Green700,
     surface = DarkBlue900,
     onSurface = Color.White,
     background = DarkBlue900,

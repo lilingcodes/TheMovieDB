@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
 
                 Scaffold(
-                    drawerElevation = 10.dp,
+                    drawerElevation = 25.dp,
                     bottomBar = {
                         if (shouldShowBottomBar(navController)) {
                             val currentScreen = allScreens.find {
