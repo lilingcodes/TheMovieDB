@@ -9,6 +9,11 @@ La pantalla principal muestra una lista de los títulos más populares o recient
 
 La sección de búsqueda permite a los usuarios buscar títulos específicos o actores. La sección de favoritos  La sección de favoritos les da la opción de guardar títulos que les gusten para revisarlos en un momento posterior, mientras que la sección de perfil les permite ver sus calificaciones y reseñas anteriores, así como editar su información personal.
 
+
+https://user-images.githubusercontent.com/118562753/230372100-c2325dae-3f0e-4a12-82c7-50cfdcc84112.mp4
+
+
+
 Este proyecto aún no ha sido completado, pero se planea utilizar estas tecnologías para crear este proyecto:
 - Este proyecto utiliza la API (gratuita) proporcionada por https://www.themoviedb.org
 - MVVM
